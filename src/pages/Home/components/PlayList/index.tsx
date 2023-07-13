@@ -1,7 +1,7 @@
 import Carousel from "../../../../components/Carousel"
 import SectionTitle from "../SectionTitle"
 import { useTranslation } from "react-i18next"
-import BannerItem from "./components/BannerItem"
+import PlayListItem from "./components/PlayListItem"
 import { IBanner } from "../../../../types/item"
 import { HomeSectionWrapper } from "../../../../components/Wrapper/SectionWrapper"
 
@@ -14,20 +14,19 @@ interface IProps {
   data: ISong
 }
 
-const Banner: React.FC<IProps> = ({ data }) => {
+const PlayList: React.FC<IProps> = ({ data }) => {
   const { t } = useTranslation()
-  console.log(data)
   return (
     <HomeSectionWrapper>
       <Carousel
-        title={t("popular")}
+        title={data?.title}
         items={data?.items}
         renderItem={(item, index) => {
-          return <BannerItem key={index} item={item} />
+          return <PlayListItem key={index} item={item} />
         }}
       />
     </HomeSectionWrapper>
   )
 }
 
-export default Banner
+export default PlayList

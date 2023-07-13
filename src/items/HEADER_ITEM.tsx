@@ -1,25 +1,25 @@
 interface IHeaderItem {
-  id: number;
-  href: string;
-  title: string;
+  id: number
+  href: string
+  title: string
 }
 
 const HEADER_ITEM: IHeaderItem[] = [
   {
     id: 1,
     href: "/",
-    title: "Trang chủ",
+    title: "home",
   },
   {
     id: 2,
     href: "/explore",
-    title: "Khám phá",
+    title: "explore",
   },
   {
     id: 3,
     href: "/library",
-    title: "Thư viện",
+    title: "library",
   },
-];
+]
 
-export default HEADER_ITEM;
+export default HEADER_ITEM

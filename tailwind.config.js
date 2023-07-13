@@ -12,10 +12,17 @@ module.exports = {
         turquoise: "#43bcff",
         blue: "#5865fc",
         blueL: "#3c92ff",
+        whiteT1: "#ffffffB3",
       },
       backgroundImage: {
         "body-bg": "url('assets/bg/body-bg.jpg')",
       },
+    },
+    minWidth: {},
+  },
+  variants: {
+    extend: {
+      display: ["group-hover"],
     },
   },
   plugins: [],

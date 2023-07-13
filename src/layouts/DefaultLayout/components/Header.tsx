@@ -3,9 +3,12 @@ import FlexTag from "../../../components/FlexTag"
 import HEADER_ITEM from "../../../items/HEADER_ITEM"
 import { CiSearch } from "react-icons/ci"
 import { useCallback, useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 interface Props {}
+
 const Header: React.FC<Props> = ({}) => {
+  const { t } = useTranslation()
   const [isTop, setIsTop] = useState<boolean>(true)
 
   const handleOnScroll = useCallback(() => {
@@ -49,7 +52,7 @@ const Header: React.FC<Props> = ({}) => {
               }
             >
               <div className=" px-6 text-xl font-bold hover:text-white">
-                {item.title}
+                {t(item.title)}
               </div>
             </NavLink>
           )
@@ -57,7 +60,7 @@ const Header: React.FC<Props> = ({}) => {
 
         <div className="text-neutral-400 px-6 text-xl font-bold hover:text-white cursor-pointer flex justify-center items-center">
           <CiSearch size={23} />
-          <div className="ml-3">Tìm kiếm</div>
+          <div className="ml-3">{t("search")}</div>
         </div>
       </div>
     </FlexTag>

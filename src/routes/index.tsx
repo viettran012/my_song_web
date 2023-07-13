@@ -1,10 +1,10 @@
-import routesConfig from "../configs/routes";
+import routesConfig from "../configs/routes"
 
 //import Layout
-import DefaultLayout from "../layouts/DefaultLayout";
+import DefaultLayout from "../layouts/DefaultLayout"
 
 //import Pages
-import Home from "../pages/Home/Home";
+import Home from "../pages/Home"
 
 // Vào được khi chưa đăng nhập
 const publicRoutes = [
@@ -26,8 +26,8 @@ const publicRoutes = [
     layout: DefaultLayout,
     sidebar: null,
   },
-];
+]
 
 // Cần đăng nhập mới có thể vào được routes
 
-export { publicRoutes };
+export { publicRoutes }

@@ -2,14 +2,17 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import discoverPageService from "../../services/discoverPageService"
 import Banner from "./components/Banner"
+import PlayList from "./components/PlayList"
+import { useAppDispatch } from "../../app/hooks"
+import { changePercentLoading } from "../../features/loading/loadingSlice"
+import setLoadingPage from "../../utils/setLoadingPage"
 
 interface IProps {}
 
 const Home: React.FC<IProps> = () => {
-  const dispatch = useDispatch()
   const [data, setData] = useState<any[]>([])
   useEffect(() => {
-    // dispatch(setToploaderProgress(30));
+    setLoadingPage({ value: 30 })
 
     discoverPageService()
       .then((fb) => {
@@ -18,20 +21,23 @@ const Home: React.FC<IProps> = () => {
         } else {
           setData([])
         }
-        // dispatch(setToploaderProgress(100));
+        setLoadingPage({ value: 100 })
       })
       .catch((error) => {
         setData([])
-        // dispatch(setToploaderProgress(100));
+        setLoadingPage({ value: 100 })
       })
   }, [])
 
-  console.log(data)
   return (
     <div className="">
       {data?.map((item, index) => {
         if (item?.sectionType == "banner") {
           return <Banner key={index} data={item} />
+        }
+
+        if (item?.sectionType == "playlist") {
+          return <PlayList key={index} data={item} />
         }
 
         return null
