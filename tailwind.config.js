@@ -13,17 +13,19 @@ module.exports = {
         blue: "#5865fc",
         blueL: "#3c92ff",
         whiteT1: "#ffffffB3",
+        bdm: "#ffffff33",
+        whv: "#ffffff1a",
       },
       backgroundImage: {
         "body-bg": "url('assets/bg/body-bg.jpg')",
       },
+      flex: {
+        a2: "2",
+        a3: "3",
+      },
     },
     minWidth: {},
   },
-  variants: {
-    extend: {
-      display: ["group-hover"],
-    },
-  },
+
   plugins: [],
 }

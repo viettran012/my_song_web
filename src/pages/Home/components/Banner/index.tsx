@@ -1,5 +1,4 @@
 import Carousel from "../../../../components/Carousel"
-import SectionTitle from "../SectionTitle"
 import { useTranslation } from "react-i18next"
 import BannerItem from "./components/BannerItem"
 import { IBanner } from "../../../../types/item"
@@ -16,7 +15,6 @@ interface IProps {
 
 const Banner: React.FC<IProps> = ({ data }) => {
   const { t } = useTranslation()
-  console.log(data)
   return (
     <HomeSectionWrapper>
       <Carousel

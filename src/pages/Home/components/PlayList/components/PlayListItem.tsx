@@ -1,11 +1,14 @@
-interface IArtists {
-  name: string
-}
+import { useCallback } from "react"
+import { Link } from "react-router-dom"
+import { createPlayListHref } from "../../../../../utils/createHref"
+import { IArtists } from "../../../../../types/item"
+import Artists from "../../../../../components/Artists"
 
 interface IItem {
   thumbnailM: string
   title: string
   artists: IArtists[]
+  encodeId: string
 }
 
 interface IProps {
@@ -13,24 +16,29 @@ interface IProps {
 }
 
 const BannerItem: React.FC<IProps> = ({ item }) => {
+  const href = createPlayListHref(item?.encodeId)
+
   return (
-    <div>
-      <div className="group w-52 h-52 mr-6 br rounded relative">
-        <img
-          className="rounded h-full object-cover cursor-pointer"
-          src={item.thumbnailM}
-        />
-        <div className="hidden group-hover:block rounded absolute w-full h-full top-0 cursor-pointer bg-gradient-to-b from-from-body-bg-gradiant to-transparent"></div>
-      </div>
-      <div className="mt-4">
-        <div className="font-bold mb-2 cursor-pointer hover:underline">
-          {item?.title}
+    <div className="mr-6 w-52">
+      <Link to={href}>
+        <div className="group w-52 h-52 rounded relative">
+          <img
+            loading="lazy"
+            className="rounded h-full object-cover cursor-pointer"
+            src={item.thumbnailM}
+            alt="playlist-thumbnail"
+          />
+          <div className="duration-300 transition-all opacity-0 group-hover:opacity-100 top-0 rounded absolute w-full h-full cursor-pointer bg-gradient-to-b from-from-body-bg-gradiant to-transparent"></div>
         </div>
+      </Link>
+      <div className="mt-4">
+        <Link to={href}>
+          <div className="font-bold mb-2 cursor-pointer hover:underline">
+            {item?.title}
+          </div>
+        </Link>
         <div className="text-whiteT1 text-sm">
-          {item?.artists?.map((item, index) =>
-            index < 3 ? item?.name || "" : "",
-          )}
-          ...
+          <Artists artists={item?.artists} />
         </div>
       </div>
     </div>

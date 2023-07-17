@@ -12,12 +12,7 @@ const Header: React.FC<Props> = ({}) => {
   const [isTop, setIsTop] = useState<boolean>(true)
 
   const handleOnScroll = useCallback(() => {
-    const top = document.documentElement.scrollTop
-    if (!top) {
-      setIsTop(true)
-    } else {
-      setIsTop(false)
-    }
+    setIsTop(!document.documentElement.scrollTop)
   }, [])
 
   useEffect(() => {
@@ -28,7 +23,7 @@ const Header: React.FC<Props> = ({}) => {
 
   return (
     <FlexTag
-      styles={`transition duration-300 fixed h-16 top-0 left-0 right-0 border-collapse z-20 border-b tra ${
+      styles={`transition duration-300 fixed h-16 top-0 left-0 right-0 border-collapse z-20 border-b ${
         isTop ? "border-transparent" : "bg-main-bg border-neutral-800"
       }`}
     >

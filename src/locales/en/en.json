@@ -3,5 +3,7 @@
   "explore": "Explore",
   "library": "Library",
   "search": "Search",
-  "popular": "Popular"
+  "popular": "Popular",
+  "song": "songs",
+  "playlist": "Playlist"
 }

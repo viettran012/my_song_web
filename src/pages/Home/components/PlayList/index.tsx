@@ -1,5 +1,4 @@
 import Carousel from "../../../../components/Carousel"
-import SectionTitle from "../SectionTitle"
 import { useTranslation } from "react-i18next"
 import PlayListItem from "./components/PlayListItem"
 import { IBanner } from "../../../../types/item"
