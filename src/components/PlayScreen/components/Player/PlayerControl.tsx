@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from "react"
-import { useAppSelector } from "../../../app/hooks"
-import getSongService from "../../../services/getSongService"
-import { ISongMP3 } from "../../../types/item"
+import { useAppSelector } from "../../../../app/hooks"
+import getSongService from "../../../../services/getSongService"
+import { ISongMP3 } from "../../../../types/item"
 import { ImPause2, ImPlay3 } from "react-icons/im"
-import { CirButton } from "../../Button"
-import { player_ } from "../../../utils/player_"
+import { CirButton } from "../../../Button"
+import { player_ } from "../../../../utils/player_"
 import { AiOutlineStepBackward, AiOutlineStepForward } from "react-icons/ai"
 import { IoMdPause } from "react-icons/io"
-import getTime from "../../../utils/getTime"
+import getTime from "../../../../utils/getTime"
 import { DurationSong, DurationSongSlider } from "./parts/DurationSong"
 
 interface IProps {}
 
 const PlayerControl: React.FC<IProps> = () => {
-  const { songId } = useAppSelector((state) => ({
-    songId: state?.player?.songId,
-  }))
+  const songId = useAppSelector((state) => state?.player?.songId)
   const isPlaying = useAppSelector((state) => state.player?.status?.isPlaying)
+  const rewind = useAppSelector((state) => state.player?.rewindListener?.to)
+  const key = useAppSelector((state) => state.player?.rewindListener?.key)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const [audio, setAudio] = useState<ISongMP3>({})
@@ -56,20 +56,34 @@ const PlayerControl: React.FC<IProps> = () => {
     getSongService(songId).then((fb) => {
       if (fb?.result == 1) {
         setAudio(fb?.data?.data)
+      } else {
+        setAudio({})
       }
     })
   }, [songId])
 
   useEffect(() => {
-    if (audioRef) {
+    if (audioRef.current) {
       isPlaying ? audioRef?.current?.play() : audioRef?.current?.pause()
     }
   }, [isPlaying, audio])
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = rewind || 0
+    }
+  }, [rewind])
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0
+    }
+  }, [key])
+
   return (
     <>
       <div className="flex h-full justify-center items-center px-4">
-        <audio src={audio[128]} ref={audioRef} />
+        <audio key={audio[128]} src={audio[128]} ref={audioRef} />
         <div className="flex justify-center items-center">
           {CONTROL_ITEM?.map((item, index) => {
             const Icon = item.icon

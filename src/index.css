@@ -34,6 +34,9 @@
   --gray-main-700: #505050;
   --animate-duration: 0.3s;
 }
+.thumbnail-player-main {
+  animation-delay: 0.3s;
+}
 html {
 }
 

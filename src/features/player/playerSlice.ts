@@ -3,7 +3,7 @@ import { RootState, AppThunk } from "../../app/store"
 import Home from "../../pages/Home"
 import { ReactNode } from "react"
 
-export interface LoadingState {
+export interface IState {
   isShow: boolean
   isShoaInfo: boolean
   songId: string
@@ -12,9 +12,14 @@ export interface LoadingState {
     currTime: number
     duration: number
   }
+  rewindListener: {
+    isScroll: boolean
+    to: number
+    key: number
+  }
 }
 
-const initialState: LoadingState = {
+const initialState: IState = {
   isShow: false,
   isShoaInfo: false,
   songId: "",
@@ -22,6 +27,11 @@ const initialState: LoadingState = {
     isPlaying: false,
     currTime: 0,
     duration: 0,
+  },
+  rewindListener: {
+    isScroll: false,
+    to: 0,
+    key: 0,
   },
 }
 
@@ -48,10 +58,28 @@ export const playerSlice = createSlice({
     ) => {
       state.status = { ...state.status, ...actions.payload }
     },
+    rewindSong: (
+      state,
+      actions: { payload: { isScroll?: boolean; to?: number } },
+    ) => {
+      state.rewindListener = {
+        ...state.rewindListener,
+        ...actions.payload,
+      }
+    },
+    resetAudio: (state) => {
+      state.rewindListener.key = Math.random()
+    },
   },
 })
 
-export const { togglePlayer, togglePlayerInfo, setSongId, setStatus } =
-  playerSlice.actions
+export const {
+  togglePlayer,
+  togglePlayerInfo,
+  setSongId,
+  setStatus,
+  rewindSong,
+  resetAudio,
+} = playerSlice.actions
 
 export default playerSlice.reducer

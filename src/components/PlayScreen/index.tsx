@@ -6,11 +6,13 @@ import { useEffect, useState } from "react"
 import getSongService, {
   getSongInfoService,
 } from "../../services/getSongService"
-import PlayerInfo from "./components/PlayerInfo"
+import PlayerInfo from "./components/Player/PlayerInfo"
 import { ISongInfo } from "../../types/item"
-import PlayerControl from "./components/PlayerControl"
-import PlayerAction from "./components/PlayerAction"
-import { DurationSongSlider } from "./components/parts/DurationSong"
+import PlayerControl from "./components/Player/PlayerControl"
+import PlayerAction from "./components/Player/PlayerAction"
+import { DurationSongSlider } from "./components/Player/parts/DurationSong"
+import { player_ } from "../../utils/player_"
+import Lays from "./components/Lays"
 
 interface IProps {}
 
@@ -36,6 +38,7 @@ export const PlayScreen: React.FC<IProps> = () => {
 
   useEffect(() => {
     if (!songId) return
+    player_.reset()
     getSongInfoService(songId)
       .then((fb) => {
         if (fb?.result == 1) {
@@ -53,32 +56,34 @@ export const PlayScreen: React.FC<IProps> = () => {
           className={`transition-all duration-300 fixed z-10 ${
             isShowInfo ? "top-header" : "top-[100vh]"
           } left-0 right-0 bottom-playcard bg-black flex flex-col`}
-        ></div>
+        >
+          <Lays song={song} />
+        </div>
 
         <div
           onClick={handleToggleShowInfo}
-          className={` animate__animated animate__slideInUp h-playcard fixed z-20 bg-grayL bottom-0 left-0 right-0 flex justify-center items-center ${
+          className={` animate__animated animate__slideInUp h-playcard fixed z-20 bg-grayL bottom-0 left-0 right-0  ${
             isShowInfo ? "pr-[12px]" : ""
           }`}
         >
-          <div className="absolute left-0 top-0 bottom-0">
-            <PlayerControl />
-          </div>
-          <div>
-            <PlayerInfo info={song} />
-          </div>
-          <div
-            className={`absolute right-0 top-0 bottom-0 ${
-              isShowInfo ? "right-[12px]" : ""
-            }`}
-          >
-            <PlayerAction />
-          </div>
-          <div
-            onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
-            className="absolute top-0 right-0 left-0"
-          >
-            <DurationSongSlider key={songId} />
+          <div className="flex justify-center items-center relative h-full">
+            <div className="absolute left-0 top-0 bottom-0">
+              <PlayerControl />
+            </div>
+            <div>
+              <PlayerInfo info={song} />
+            </div>
+            <div className={`absolute right-0 top-0 bottom-0`}>
+              <PlayerAction />
+            </div>
+            <div
+              onClick={(e: React.MouseEvent<HTMLElement>) =>
+                e.stopPropagation()
+              }
+              className="absolute top-0 right-0 left-0"
+            >
+              <DurationSongSlider key={songId} />
+            </div>
           </div>
         </div>
       </>

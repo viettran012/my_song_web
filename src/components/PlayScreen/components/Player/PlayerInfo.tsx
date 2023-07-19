@@ -1,7 +1,7 @@
-import { useAppSelector } from "../../../app/hooks"
-import { SONG_ACTION } from "../../../items/ACTION_ITEM"
-import { ISongInfo } from "../../../types/item"
-import { CirButton } from "../../Button"
+import { useAppSelector } from "../../../../app/hooks"
+import { SONG_ACTION } from "../../../../items/ACTION_ITEM"
+import { ISongInfo } from "../../../../types/item"
+import { CirButton } from "../../../Button"
 import { DurationSongSlider } from "./parts/DurationSong"
 
 interface IProps {

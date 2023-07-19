@@ -1,5 +1,6 @@
 import store from "../app/store"
 import { setSongId } from "../features/player/playerSlice"
+import { player_ } from "./player_"
 import { showPlayer, showPlayerInfo } from "./ui"
 
 interface IPlaySongProps {

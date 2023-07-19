@@ -39,7 +39,7 @@ const SongItem: React.FC<IProps> = ({ song, handlePlaySong = () => {} }) => {
         </div>
         <Link to={href}>
           <div
-            // onClick={() => handlePlaySong(song)}
+            onClick={() => handlePlaySong(song)}
             className="font-semibold whitespace-nowrap cursor-pointer"
           >
             <div>{song?.title}</div>
