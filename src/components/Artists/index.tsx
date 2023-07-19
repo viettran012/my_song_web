@@ -7,18 +7,23 @@ interface IProps {
 }
 
 const Artists: React.FC<IProps> = ({ artists }) => {
-  return artists?.map((item, index) =>
-    index < 3
-      ? (
+  return (
+    <div>
+      {artists?.map((item, index) =>
+        index < 3 ? (
           <Link
             key={index}
             to={createPlayListHref(item?.playlistId)}
             className="hover:underline"
           >
-            {`${item?.name}, `}
+            {`${item?.name}${index == artists?.length - 1 ? "" : ","} `}
           </Link>
-        ) || ""
-      : "",
+        ) : (
+          ""
+        ),
+      )}
+      {artists?.length > 3 ? "..." : ""}
+    </div>
   )
 }
 

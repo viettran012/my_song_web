@@ -4,11 +4,14 @@ import HEADER_ITEM from "../../../items/HEADER_ITEM"
 import { CiSearch } from "react-icons/ci"
 import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { useAppSelector } from "../../../app/hooks"
 
 interface Props {}
 
 const Header: React.FC<Props> = ({}) => {
   const { t } = useTranslation()
+  const isShow = useAppSelector((state) => state?.player?.isShoaInfo)
+
   const [isTop, setIsTop] = useState<boolean>(true)
 
   const handleOnScroll = useCallback(() => {
@@ -23,9 +26,9 @@ const Header: React.FC<Props> = ({}) => {
 
   return (
     <FlexTag
-      styles={`transition duration-300 fixed h-16 top-0 left-0 right-0 border-collapse z-20 border-b ${
-        isTop ? "border-transparent" : "bg-main-bg border-neutral-800"
-      }`}
+      styles={`transition duration-300 fixed h-header top-0 left-0 right-0 border-collapse z-20 border-b ${
+        isTop || isShow ? `border-transparent` : "bg-main-bg border-neutral-800"
+      } ${isShow ? "bg-main-bg pr-[12px]" : ""}`}
     >
       <Link to={"/"} className="cursor-pointer absolute left-3">
         <FlexTag>

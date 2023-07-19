@@ -4,24 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* width */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   border-left: 1px var(--border-main) solid;
   border-radius: 0px;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: var(--gray-main);
   border-radius: 0;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gray-main-700);
 }
@@ -36,6 +32,9 @@
   --border-main: #262626;
   --gray-main: #606060;
   --gray-main-700: #505050;
+  --animate-duration: 0.3s;
+}
+html {
 }
 
 body {
@@ -49,6 +48,7 @@ body {
   background-color: var(--main-bg);
   color: var(--color-white);
   height: 100vh;
+  overflow-y: scroll;
 }
 
 code {

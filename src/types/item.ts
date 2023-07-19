@@ -21,10 +21,31 @@ export interface ISong {
   thumbnailM: string
   artists: IArtists[]
   duration: number
+  encodeId: string
 }
 
 export interface ISongList {
   total?: string
   totalDuration?: number
   items?: ISong[]
+}
+
+export interface IPath {
+  hash?: string
+  key?: string
+  pathname?: string
+  search?: string
+}
+
+export interface ISongInfo {
+  artists?: IArtists[]
+  artistsNames?: string
+  duration?: number
+  thumbnailM?: string
+  title?: string
+}
+
+export interface ISongMP3 {
+  128?: string
+  320?: string
 }

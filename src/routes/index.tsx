@@ -6,6 +6,7 @@ import DefaultLayout from "../layouts/DefaultLayout"
 //import Pages
 import Home from "../pages/Home"
 import PlayList from "../pages/PlayList"
+import Player from "../pages/Player"
 
 // Vào được khi chưa đăng nhập
 const publicRoutes = [
@@ -30,6 +31,12 @@ const publicRoutes = [
   {
     path: routesConfig.playlist,
     component: PlayList,
+    layout: DefaultLayout,
+    sidebar: null,
+  },
+  {
+    path: routesConfig.player,
+    component: Player,
     layout: DefaultLayout,
     sidebar: null,
   },

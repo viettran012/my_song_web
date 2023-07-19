@@ -1,16 +1,31 @@
 import { Fragment, useEffect } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { publicRoutes } from "./routes"
+import useHistory from "./hooks/useHistory"
+import { useAppSelector } from "./app/hooks"
+import routesConfig from "./configs/routes"
+import Home from "./pages/Home"
+import { playSong } from "./utils/playSong"
+import "animate.css"
 
 function App() {
+  const currentPath = useAppSelector((state) => state.routes?.pay?.currentPath)
+
   return (
     <Router>
       <div className="App">
         <Routes>
           {publicRoutes.map((publicRoute, index) => {
-            const Layout =
-              publicRoute.layout === null ? Fragment : publicRoute.layout
-            const Page = publicRoute.component
+            let Layout = publicRoute.layout
+            let Page
+            if (publicRoute.path == routesConfig?.player) {
+              const pathName = currentPath.pathname
+
+              const route = publicRoutes.find((route) => route.path == pathName)
+              Page = route?.component || Home
+            } else {
+              Page = publicRoute.component
+            }
 
             return (
               <Route

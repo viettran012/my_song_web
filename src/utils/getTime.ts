@@ -88,13 +88,13 @@ const getTime = {
       totalseconds - daysout * day - hoursout * hour - minutesout * minute
 
     const dayString = daysout ? `${daysout}:` : ""
-    const hourString = hoursout ? `${hoursout}:` : ""
-    const minuteString = minutesout ? `${minutesout}:` : ""
+    const hourString = hoursout ? `${hoursout}` : ""
+    const minuteString = minutesout ? `${minutesout}` : ""
     const secondString = secondsout
 
     return `${dayString}${hourString}${
       Number(minuteString || 0) < 10 ? `0${minuteString}` : minuteString
-    }${Number(secondString) < 10 ? `0${secondString}` : secondString}`
+    }:${Number(secondString) < 10 ? `0${secondString}` : secondString}`
   },
 }
 

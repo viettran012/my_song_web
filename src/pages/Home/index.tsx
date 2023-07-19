@@ -11,6 +11,7 @@ interface IProps {}
 
 const Home: React.FC<IProps> = () => {
   const [data, setData] = useState<any[]>([])
+
   useEffect(() => {
     setLoadingPage({ value: 30 })
 

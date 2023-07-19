@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useLocation, useParams, useSearchParams } from "react-router-dom"
 import getPlayListInfoService from "../../services/playListService"
 import PlayListBsInfo from "./components/PlayListBsInfo"
@@ -7,12 +7,15 @@ import Loader from "../../components/Loader"
 import setLoadingPage from "../../utils/setLoadingPage"
 import { PlayListVariants } from "./components/PlayListVariants"
 import { SongList } from "./components/SongList"
+import routesConfig from "../../configs/routes"
 
 interface IProps {}
 
 const PlayList: React.FC<IProps> = ({}) => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const { pathname } = useLocation()
 
+  const id = useRef<string>("")
   const [data, setData] = useState<IPlayList>({})
   const [isLoading, setIsloading] = useState<boolean>(true)
 
@@ -22,11 +25,15 @@ const PlayList: React.FC<IProps> = ({}) => {
   }, [])
 
   useEffect(() => {
-    const id = searchParams.get("id")
+    const isValidRerender = pathname == routesConfig.playlist
+    if (!isValidRerender) return
+    const id_ = searchParams.get("id") || ""
+    if (id.current == id_) return
+
+    id.current = id_
 
     setLoading(true)
-
-    getPlayListInfoService(id || "")
+    getPlayListInfoService(id_)
       .then((fb) => {
         setLoading(false)
         if (fb?.result == 1) setData(fb?.data?.data)
@@ -35,7 +42,6 @@ const PlayList: React.FC<IProps> = ({}) => {
         setLoading(false)
       })
   }, [searchParams])
-
   return (
     <div>
       {isLoading ? (

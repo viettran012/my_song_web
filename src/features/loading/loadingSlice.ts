@@ -14,7 +14,7 @@ const initialState: LoadingState = {
 export const selectValue = (state: RootState) => state.loading.value
 
 export const loadingSlice = createSlice({
-  name: "counter",
+  name: "loading",
   initialState,
   reducers: {
     changePercentLoading: (state, actions: { payload: number }) => {

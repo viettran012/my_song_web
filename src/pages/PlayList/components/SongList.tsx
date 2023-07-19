@@ -1,4 +1,7 @@
+import { useAppDispatch } from "../../../app/hooks"
+import { togglePlayer } from "../../../features/player/playerSlice"
 import { ISong } from "../../../types/item"
+import { showPlayer } from "../../../utils/ui"
 import SongItem from "./SongItem"
 
 interface SongListProps {
@@ -6,10 +9,14 @@ interface SongListProps {
 }
 
 const SongList: React.FC<SongListProps> = ({ list }) => {
+  const handlePlaySong = (song: ISong) => {
+    showPlayer(true)
+  }
+
   return (
-    <div className="mt-9">
+    <div className="mt-14">
       {list.map((song, index) => (
-        <SongItem key={index} song={song} />
+        <SongItem handlePlaySong={handlePlaySong} key={index} song={song} />
       ))}
     </div>
   )
