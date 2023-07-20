@@ -13,11 +13,13 @@ import PlayerAction from "./components/Player/PlayerAction"
 import { DurationSongSlider } from "./components/Player/parts/DurationSong"
 import { player_ } from "../../utils/player_"
 import Lays from "./components/Lays"
+import usePlaylistFw from "../../hooks/usePlaylistFw"
 
 interface IProps {}
 
 export const PlayScreen: React.FC<IProps> = memo(() => {
   const navigate = useNavigate()
+  usePlaylistFw()
   const isShowInfo = useAppSelector((state) => state.player.isShoaInfo)
   const isShow = useAppSelector((state) => state.player.isShow)
   const songId = useAppSelector((state) => state.player.songId)

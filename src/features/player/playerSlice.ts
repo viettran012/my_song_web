@@ -2,12 +2,14 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState, AppThunk } from "../../app/store"
 import Home from "../../pages/Home"
 import { ReactNode } from "react"
+import { ISong } from "../../types/item"
 
 export interface IState {
   isShow: boolean
   isShoaInfo: boolean
   songId: string
   playListId: string
+  playList: ISong[]
   status: {
     isPlaying: boolean
     currTime: number
@@ -26,6 +28,7 @@ const initialState: IState = {
   isShoaInfo: false,
   songId: "",
   playListId: "",
+  playList: [],
   status: {
     isPlaying: false,
     currTime: 0,
@@ -52,12 +55,16 @@ export const playerSlice = createSlice({
       state.isShoaInfo = actions.payload
     },
     setSongId: (state, actions: { payload: string }) => {
-      const isLoading = !(state?.songId == actions?.payload)
+      const isLoading =
+        !(state?.songId == actions?.payload) || state?.status?.isLoading
       state.songId = actions.payload
       state.status.isLoading = isLoading
     },
     setPlayListId: (state, actions: { payload: string }) => {
       state.playListId = actions.payload
+    },
+    setPlayList: (state, actions: { payload: ISong[] }) => {
+      state.playList = actions.payload
     },
     setStatus: (
       state,
@@ -95,6 +102,7 @@ export const {
   rewindSong,
   resetAudio,
   setPlayListId,
+  setPlayList,
 } = playerSlice.actions
 
 export default playerSlice.reducer

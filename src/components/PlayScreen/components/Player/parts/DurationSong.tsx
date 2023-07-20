@@ -25,7 +25,11 @@ export const DurationSong: React.FC<IDurationSong> = ({ audio }) => {
         const currentTime = Math.floor(audio?.currentTime || 0)
         !isScrolling && dispath(setStatus({ currTime: currentTime }))
       }
+      audio.onended = () => {
+        player_.next()
+      }
       audio.oncanplay = () => {
+        if (!audio?.src) return
         dispath(setStatus({ duration: audio?.duration }))
         player_.ready()
       }
@@ -46,8 +50,9 @@ interface IDurationSongSlider {}
 export const DurationSongSlider: React.FC<IDurationSongSlider> = memo(() => {
   const current = useAppSelector((state) => state?.player?.status?.currTime)
   const duration = useAppSelector((state) => state?.player?.status?.duration)
+  const songId = useAppSelector((state) => state?.player?.songId)
 
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(current)
 
   const onChange = (value: number) => {
     setValue(value)
@@ -59,19 +64,19 @@ export const DurationSongSlider: React.FC<IDurationSongSlider> = memo(() => {
   }
 
   useEffect(() => {
+    songId && setValue(0)
+  }, [songId])
+
+  useEffect(() => {
     setValue(current)
   }, [current])
+
   return (
     <DurationSongSliderWrapper duration={duration}>
       <Slider
         style={{ margin: 0 }}
         trackStyle={{ backgroundColor: "#43bcff", height: 2 }}
         railStyle={{ backgroundColor: "#515151", height: 2 }}
-        handleStyle={
-          {
-            // height: 5,
-          }
-        }
         defaultValue={0}
         value={value}
         onChange={onChange}

@@ -7,6 +7,7 @@ import { AiOutlineMore } from "react-icons/ai"
 import { CirButton } from "../../../components/Button"
 import { PiHeartLight } from "react-icons/pi"
 import { IoVolumeHighOutline } from "react-icons/io5"
+import { useEffect } from "react"
 
 import { FaPause, FaPlay } from "react-icons/fa"
 
@@ -110,9 +111,24 @@ export const SongItemCard: React.FC<IProps> = ({
   const isPlaying = songId == song?.encodeId && isPlaying_
   const isFocus = songId == song?.encodeId
 
+  useEffect(() => {
+    if (songId && isFocus) {
+      const element = document.querySelector(
+        `.song-playlist-item-player-${songId}`,
+      )
+      element &&
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        })
+    }
+  }, [songId])
+
   return (
     <div
-      className={`group border-b border-neutral-900 h-16 px-2 flex items-center justify-between ${
+      className={`group song-playlist-item-player-${
+        song?.encodeId
+      } border-b border-neutral-900 h-16 px-2 flex items-center justify-between ${
         isFocus ? "bg-grayL" : ""
       }`}
     >

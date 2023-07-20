@@ -25,7 +25,7 @@ const LyricLays: React.FC<IProps> = () => {
     })
     if (index != -1) setCurrIndecLyric(index || 0)
 
-    const lyricE = document.querySelector(`#lyric-word-${index}`)
+    const lyricE = document.querySelector(`#lyric-word-${index}-${id}`)
     if (lyricE && index != indexRef.current) {
       lyricE.scrollIntoView({
         behavior: "smooth",
@@ -60,7 +60,7 @@ const LyricLays: React.FC<IProps> = () => {
       {lyricData?.map((lyric, index) => {
         return (
           <div
-            id={`lyric-word-${index}`}
+            id={`lyric-word-${index}-${id}`}
             key={`lyric-word-${index}`}
             className={`transition-all ${
               currIndexLyric == index

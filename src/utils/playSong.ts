@@ -1,5 +1,9 @@
 import store from "../app/store"
-import { setPlayListId, setSongId } from "../features/player/playerSlice"
+import {
+  setPlayListId,
+  setSongId,
+  setStatus,
+} from "../features/player/playerSlice"
 import { getSongInfoService } from "../services/getSongService"
 import { player_ } from "./player_"
 import { showPlayer, showPlayerInfo } from "./ui"
@@ -26,5 +30,8 @@ export const setSong = ({ id = "", playListId = "" }: IPlaySongProps) => {
         store.dispatch(setPlayListId(playListId || ""))
       }
     })
-  } else store.dispatch(setPlayListId(playListId))
+  } else
+    store.dispatch(
+      setPlayListId(playListId || store?.getState()?.player?.playListId),
+    )
 }

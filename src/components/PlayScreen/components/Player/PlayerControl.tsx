@@ -30,7 +30,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
       bRadius: 40,
       callback: (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
-        isPlaying ? player_.pause() : player_.play()
+        player_.pre()
       },
     },
     {
@@ -50,13 +50,14 @@ const PlayerControl: React.FC<IProps> = memo(() => {
       bRadius: 40,
       callback: (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
-        isPlaying ? player_.pause() : player_.play()
+        player_.next()
       },
     },
   ]
 
   useEffect(() => {
     if (!songId) return
+    setAudio({})
     getSongService(songId).then((fb) => {
       if (fb?.result == 1) {
         setAudio(fb?.data?.data)
@@ -67,7 +68,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
   }, [songId])
 
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current?.src) {
       isPlaying ? audioRef?.current?.play() : audioRef?.current?.pause()
     }
   }, [isPlaying, audio])
@@ -109,7 +110,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
               </CirButton>
             )
           })}
-          <DurationSong audio={audioElement || null} key={audio[128]} />
+          <DurationSong audio={audioElement || null} key={songId} />
         </div>
       </div>
     </>
