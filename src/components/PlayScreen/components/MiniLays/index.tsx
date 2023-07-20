@@ -1,0 +1,3 @@
+interface IMiniLays {}
+
+const MiniLays = () => {}

@@ -7,6 +7,16 @@ export interface IArtists {
   playlistId: string | number
 }
 
+export interface ILyricWord {
+  data: string
+  endTime: number
+  startTime: number
+}
+
+export interface ILyric {
+  words: ILyricWord[]
+}
+
 export interface IPlayList {
   thumbnailM?: string
   thumbnail?: string

@@ -28,37 +28,7 @@ module.exports = {
         a2: "2",
         a3: "3",
       },
-      keyframes: {
-        playerImageTranslate: {
-          "0%": { transform: "translate(200px, 0px)", height: 0, opacity: 0 },
-          "20%": {
-            transform: "translate(160px, 0px)",
-            height: "20%",
-            opacity: 0.1,
-          },
-          "40%": {
-            transform: "translate(120px, 0px)",
-            height: "40%",
-            opacity: 0.2,
-          },
-          "60%": {
-            transform: "translate(80px, 0px)",
-            height: "60%",
-            opacity: 0.3,
-          },
-          "80%": {
-            transform: "translate(40px, 0px)",
-            height: "80%",
-            opacity: 0.4,
-          },
-          "100%": { transform: "translate(0)", height: "100%", opacity: 1 },
-        },
-      },
-      animation: {
-        playerImageTranslate: "playerImageTranslate 300ms ease-in-out",
-      },
     },
-    minWidth: {},
   },
 
   plugins: [],

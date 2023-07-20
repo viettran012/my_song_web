@@ -1,18 +1,30 @@
 import store from "../app/store"
-import { setSongId } from "../features/player/playerSlice"
+import { setPlayListId, setSongId } from "../features/player/playerSlice"
+import { getSongInfoService } from "../services/getSongService"
 import { player_ } from "./player_"
 import { showPlayer, showPlayerInfo } from "./ui"
 
 interface IPlaySongProps {
   id: string
+  playListId?: string
 }
 
-export const playSong = ({ id = "" }: IPlaySongProps) => {
+export const playSong = ({ id = "", playListId = "" }: IPlaySongProps) => {
   showPlayer(true)
   showPlayerInfo(true)
-  setSong({ id })
+  setSong({ id, playListId })
 }
 
-export const setSong = ({ id = "" }: IPlaySongProps) => {
+export const setSong = ({ id = "", playListId = "" }: IPlaySongProps) => {
   store.dispatch(setSongId(id))
+  if (playListId == "000") {
+    getSongInfoService(id).then((fb) => {
+      if (fb?.result == 1) {
+        const song = fb?.data?.data
+        const playListId = song?.album?.encodeId
+
+        store.dispatch(setPlayListId(playListId || ""))
+      }
+    })
+  } else store.dispatch(setPlayListId(playListId))
 }

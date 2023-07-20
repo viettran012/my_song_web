@@ -49,7 +49,7 @@ const PlayList: React.FC<IProps> = ({}) => {
       ) : (
         <div className="py-7">
           <PlayListBsInfo data={data} />
-          <SongList list={data?.song?.items || []} />
+          <SongList list={data?.song?.items || []} id={id.current} />
         </div>
       )}
     </div>

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useAppSelector } from "../../app/hooks"
 import { showPlayerInfo } from "../../utils/ui"
 import { createPlayerHref } from "../../utils/createHref"
-import { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 import getSongService, {
   getSongInfoService,
 } from "../../services/getSongService"
@@ -16,14 +16,14 @@ import Lays from "./components/Lays"
 
 interface IProps {}
 
-export const PlayScreen: React.FC<IProps> = () => {
+export const PlayScreen: React.FC<IProps> = memo(() => {
   const navigate = useNavigate()
   const isShowInfo = useAppSelector((state) => state.player.isShoaInfo)
   const isShow = useAppSelector((state) => state.player.isShow)
-
   const songId = useAppSelector((state) => state.player.songId)
   const route = useAppSelector((state) => state.routes.pay)
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [song, setSong] = useState<ISongInfo>({})
 
   const handleToggleShowInfo = () => {
@@ -39,14 +39,18 @@ export const PlayScreen: React.FC<IProps> = () => {
   useEffect(() => {
     if (!songId) return
     player_.reset()
+    setIsLoading(true)
     getSongInfoService(songId)
       .then((fb) => {
         if (fb?.result == 1) {
           setSong(fb?.data?.data)
         } else {
         }
+        setIsLoading(false)
       })
-      .catch((error) => {})
+      .catch((error) => {
+        setIsLoading(false)
+      })
   }, [songId])
 
   return (
@@ -57,7 +61,7 @@ export const PlayScreen: React.FC<IProps> = () => {
             isShowInfo ? "top-header" : "top-[100vh]"
           } left-0 right-0 bottom-playcard bg-black flex flex-col`}
         >
-          <Lays song={song} />
+          <Lays song={song} isLoading={isLoading} />
         </div>
 
         <div
@@ -71,7 +75,7 @@ export const PlayScreen: React.FC<IProps> = () => {
               <PlayerControl />
             </div>
             <div>
-              <PlayerInfo info={song} />
+              <PlayerInfo info={song} isLoading={isLoading} />
             </div>
             <div className={`absolute right-0 top-0 bottom-0`}>
               <PlayerAction />
@@ -89,4 +93,4 @@ export const PlayScreen: React.FC<IProps> = () => {
       </>
     )
   )
-}
+})

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { useAppSelector } from "../../../../app/hooks"
 import getSongService from "../../../../services/getSongService"
 import { ISongMP3 } from "../../../../types/item"
@@ -9,18 +9,20 @@ import { AiOutlineStepBackward, AiOutlineStepForward } from "react-icons/ai"
 import { IoMdPause } from "react-icons/io"
 import getTime from "../../../../utils/getTime"
 import { DurationSong, DurationSongSlider } from "./parts/DurationSong"
+import Loader from "../../../Loader"
 
 interface IProps {}
 
-const PlayerControl: React.FC<IProps> = () => {
+const PlayerControl: React.FC<IProps> = memo(() => {
   const songId = useAppSelector((state) => state?.player?.songId)
   const isPlaying = useAppSelector((state) => state.player?.status?.isPlaying)
   const rewind = useAppSelector((state) => state.player?.rewindListener?.to)
   const key = useAppSelector((state) => state.player?.rewindListener?.key)
+  const isLoading = useAppSelector((state) => state.player.status?.isLoading)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
 
   const [audio, setAudio] = useState<ISongMP3>({})
-
   const CONTROL_ITEM = [
     {
       icon: AiOutlineStepBackward,
@@ -32,11 +34,13 @@ const PlayerControl: React.FC<IProps> = () => {
       },
     },
     {
-      icon: isPlaying ? IoMdPause : ImPlay3,
+      icon: isLoading ? Loader : isPlaying ? IoMdPause : ImPlay3,
       size: 35,
+      fill: "#43bcff",
       bRadius: 50,
       callback: (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
+        if (isLoading) return
         isPlaying ? player_.pause() : player_.play()
       },
     },
@@ -80,6 +84,10 @@ const PlayerControl: React.FC<IProps> = () => {
     }
   }, [key])
 
+  useEffect(() => {
+    audioRef.current && setAudioElement(audioRef.current)
+  }, [audio[128]])
+
   return (
     <>
       <div className="flex h-full justify-center items-center px-4">
@@ -87,6 +95,8 @@ const PlayerControl: React.FC<IProps> = () => {
         <div className="flex justify-center items-center">
           {CONTROL_ITEM?.map((item, index) => {
             const Icon = item.icon
+            const loadingProps =
+              isLoading && item?.fill ? { fill: item.fill } : {}
             return (
               <CirButton
                 key={index}
@@ -95,15 +105,15 @@ const PlayerControl: React.FC<IProps> = () => {
                 isTransparent
                 styles={{ margin: "0 4px" }}
               >
-                <Icon size={item.size} />
+                <Icon {...loadingProps} size={item.size} />
               </CirButton>
             )
           })}
-          <DurationSong audio={audioRef.current} key={audio[128]} />
+          <DurationSong audio={audioElement || null} key={audio[128]} />
         </div>
       </div>
     </>
   )
-}
+})
 
 export default PlayerControl

@@ -17,9 +17,14 @@ export const CirButton: React.FC<ICirButton> = ({
   disabled = false,
   isTransparent = false,
 }) => {
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
+    onClick && onClick(e)
+  }
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className={`cursor-pointer transition-all rounded-full flex justify-center items-center border active:scale-90 ${
         !isTransparent ? "border-bdm" : "border-transparent"
       } hover:bg-whv`}

@@ -2,14 +2,19 @@ import { useAppSelector } from "../../../../app/hooks"
 import { SONG_ACTION } from "../../../../items/ACTION_ITEM"
 import { ISongInfo } from "../../../../types/item"
 import { CirButton } from "../../../Button"
+import { SongPlayerThumbVariant } from "../../../Variants"
 import { DurationSongSlider } from "./parts/DurationSong"
+import { useState } from "react"
 
 interface IProps {
   info: ISongInfo
+  isLoading: boolean
 }
 
-const PlayerInfo: React.FC<IProps> = ({ info }) => {
-  return (
+const PlayerInfo: React.FC<IProps> = ({ info, isLoading }) => {
+  return isLoading ? (
+    <SongPlayerThumbVariant />
+  ) : (
     <div className="h-11 flex">
       <div className="mr-3">
         <img alt="song-thumb" src={info?.thumbnailM} className="h-11" />

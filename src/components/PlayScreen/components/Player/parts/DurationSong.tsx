@@ -22,11 +22,12 @@ export const DurationSong: React.FC<IDurationSong> = ({ audio }) => {
   useEffect(() => {
     if (audio) {
       audio.ontimeupdate = () => {
-        const currentTime = Math.ceil(audio?.currentTime || 0)
+        const currentTime = Math.floor(audio?.currentTime || 0)
         !isScrolling && dispath(setStatus({ currTime: currentTime }))
       }
       audio.oncanplay = () => {
         dispath(setStatus({ duration: audio?.duration }))
+        player_.ready()
       }
     }
   }, [audio, isScrolling])
@@ -34,7 +35,7 @@ export const DurationSong: React.FC<IDurationSong> = ({ audio }) => {
   return (
     <div className="text-whiteT1 text-xs ml-3">
       {`${getTime.caculateTimeFM(current)} / ${getTime.caculateTimeFM(
-        Math.ceil(duration || 0),
+        Math.floor(duration || 0),
       )}`}
     </div>
   )
@@ -46,7 +47,7 @@ export const DurationSongSlider: React.FC<IDurationSongSlider> = memo(() => {
   const current = useAppSelector((state) => state?.player?.status?.currTime)
   const duration = useAppSelector((state) => state?.player?.status?.duration)
 
-  const [value, setValue] = useState(duration)
+  const [value, setValue] = useState(0)
 
   const onChange = (value: number) => {
     setValue(value)
@@ -60,13 +61,17 @@ export const DurationSongSlider: React.FC<IDurationSongSlider> = memo(() => {
   useEffect(() => {
     setValue(current)
   }, [current])
-
   return (
     <DurationSongSliderWrapper duration={duration}>
       <Slider
         style={{ margin: 0 }}
         trackStyle={{ backgroundColor: "#43bcff", height: 2 }}
         railStyle={{ backgroundColor: "#515151", height: 2 }}
+        handleStyle={
+          {
+            // height: 5,
+          }
+        }
         defaultValue={0}
         value={value}
         onChange={onChange}
@@ -97,7 +102,7 @@ const DurationSongSliderWrapper: React.FC<IDurationSongSliderWrapper> = ({
       const rect = barRef?.current?.getBoundingClientRect()
       const w: number = barRef?.current?.offsetWidth
       const x: number = e.clientX - rect.left
-      setTooktipValue(Math.ceil((x / w) * duration))
+      setTooktipValue(Math.floor((x / w) * duration))
     }
   }
 

@@ -9,7 +9,7 @@ export default defineConfig({
   },
   build: {
     outDir: "build",
-    sourcemap: true,
+    sourcemap: false,
   },
   test: {
     globals: true,

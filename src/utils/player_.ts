@@ -19,4 +19,8 @@ export const player_ = {
   reset: function () {
     store?.dispatch(resetAudio())
   },
+
+  ready: function () {
+    store?.dispatch(setStatus({ isLoading: false }))
+  },
 }
