@@ -1,5 +1,6 @@
 import Skeleton from "@mui/material/Skeleton"
 import { grey } from "@mui/material/colors"
+import Loader from "../Loader"
 
 export const SongImgThumbVariant: React.FC = () => {
   // create empty array have 4 items
@@ -14,7 +15,7 @@ export const SongImgThumbVariant: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full px-6">
+    <div className="w-full h-full px-6 relative flex justify-center items-center">
       <Skeleton
         sx={{ ...mainStyle }}
         variant="rounded"
@@ -23,6 +24,9 @@ export const SongImgThumbVariant: React.FC = () => {
         animation={animate}
         color=""
       />
+      <div className="absolute ">
+        <Loader size={50} />
+      </div>
     </div>
   )
 }

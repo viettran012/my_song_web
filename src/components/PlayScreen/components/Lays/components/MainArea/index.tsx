@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material"
-import { useState, CSSProperties, useEffect } from "react"
+import { useState, CSSProperties, useEffect, memo } from "react"
 import PlayListLays from "../PlayListLays"
 import { PLAYER_ITEM } from "../../../../../../items/PLAYER_ITEM"
 import { useAppSelector } from "../../../../../../app/hooks"
@@ -44,7 +44,7 @@ function a11yProps(index: number) {
   }
 }
 
-const MainArea: React.FC<IProps> = () => {
+const MainArea: React.FC<IProps> = memo(() => {
   const [value, setValue] = useState(0)
   const [arrValue, setArrvalue] = useState<number[]>([0])
   const playListId = useAppSelector((state) => state.player.playListId)
@@ -91,6 +91,6 @@ const MainArea: React.FC<IProps> = () => {
       </CustomTabPanel>
     </>
   )
-}
+})
 
 export default MainArea

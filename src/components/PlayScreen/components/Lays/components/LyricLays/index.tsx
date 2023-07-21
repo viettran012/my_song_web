@@ -62,12 +62,13 @@ const LyricLays: React.FC<IProps> = () => {
           <div
             id={`lyric-word-${index}-${id}`}
             key={`lyric-word-${index}`}
-            className={`transition-all ${
+            className={`transition-all text-base ${
               currIndexLyric == index
                 ? "text-turquoise font-bold"
-                : "text-whiteT1"
+                : "text-white"
             }`}
           >
+            {!(index % 8) && index ? <div className="h-8"></div> : null}
             {lyric?.words?.map((word) => `${word?.data} `)}
           </div>
         )

@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from "react"
-import { useAppSelector } from "../../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
 import getSongService from "../../../../services/getSongService"
 import { ISongMP3 } from "../../../../types/item"
 import { ImPause2, ImPlay3 } from "react-icons/im"
@@ -10,10 +10,13 @@ import { IoMdPause } from "react-icons/io"
 import getTime from "../../../../utils/getTime"
 import { DurationSong, DurationSongSlider } from "./parts/DurationSong"
 import Loader from "../../../Loader"
+import { setStatus } from "../../../../features/player/playerSlice"
+import { VolumeListenner } from "./parts/VolumeTrack"
 
 interface IProps {}
 
 const PlayerControl: React.FC<IProps> = memo(() => {
+  const dispath = useAppDispatch()
   const songId = useAppSelector((state) => state?.player?.songId)
   const isPlaying = useAppSelector((state) => state.player?.status?.isPlaying)
   const rewind = useAppSelector((state) => state.player?.rewindListener?.to)
@@ -86,7 +89,13 @@ const PlayerControl: React.FC<IProps> = memo(() => {
   }, [key])
 
   useEffect(() => {
-    audioRef.current && setAudioElement(audioRef.current)
+    if (!audioRef.current) return
+    setAudioElement(audioRef.current)
+    audioRef.current.oncanplay = () => {
+      if (!audioRef.current?.src) return
+      dispath(setStatus({ duration: audioRef.current?.duration }))
+      player_.ready()
+    }
   }, [audio[128]])
 
   return (
@@ -111,6 +120,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
             )
           })}
           <DurationSong audio={audioElement || null} key={songId} />
+          <VolumeListenner audio={audioElement || null} />
         </div>
       </div>
     </>

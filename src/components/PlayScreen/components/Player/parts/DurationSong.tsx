@@ -7,6 +7,7 @@ import { player_ } from "../../../../../utils/player_"
 import Tippy from "@tippyjs/react"
 import { followCursor } from "tippy.js"
 import "tippy.js/dist/tippy.css"
+import store from "../../../../../app/store"
 
 interface IDurationSong {
   audio: HTMLAudioElement | null
@@ -26,12 +27,8 @@ export const DurationSong: React.FC<IDurationSong> = ({ audio }) => {
         !isScrolling && dispath(setStatus({ currTime: currentTime }))
       }
       audio.onended = () => {
-        player_.next()
-      }
-      audio.oncanplay = () => {
-        if (!audio?.src) return
-        dispath(setStatus({ duration: audio?.duration }))
-        player_.ready()
+        const isRepeat = store?.getState()?.player?.status?.isRepeat
+        isRepeat ? player_?.replay() : player_.next()
       }
     }
   }, [audio, isScrolling])

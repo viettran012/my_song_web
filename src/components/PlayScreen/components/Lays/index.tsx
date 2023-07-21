@@ -1,8 +1,10 @@
 import { useAppSelector } from "../../../../app/hooks"
 import { ISongInfo } from "../../../../types/item"
+import { player_ } from "../../../../utils/player_"
 import { SongImgThumbVariant } from "../../../Variants"
 import MainArea from "./components/MainArea"
 import PlayListLays from "./components/PlayListLays"
+import ThumbMain from "./components/ThumbMain"
 
 interface IProps {
   song: ISongInfo
@@ -20,21 +22,7 @@ const Lays: React.FC<IProps> = ({ song, isLoading }) => {
     >
       <div className="w-full h-full flex">
         <div className="w-3/5 flex">
-          {isShowInfo && (
-            <div
-              className={`flex-1 relative h-full flex justify-center items-center`}
-            >
-              {isLoading ? (
-                <SongImgThumbVariant />
-              ) : (
-                <img
-                  alt="song-thumbnail"
-                  src={song?.thumbnailM}
-                  className="h-full"
-                />
-              )}
-            </div>
-          )}
+          {isShowInfo && <ThumbMain song={song} isLoading={isLoading} />}
         </div>
         <div className="w-2/5 flex flex-col">
           <MainArea />

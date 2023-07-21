@@ -15,6 +15,9 @@ export interface IState {
     currTime: number
     duration: number
     isLoading: boolean
+    volume: number
+    isRepeat: boolean
+    isMix: boolean
   }
   rewindListener: {
     isScroll: boolean
@@ -34,6 +37,9 @@ const initialState: IState = {
     currTime: 0,
     duration: 0,
     isLoading: false,
+    volume: 0.7,
+    isRepeat: false,
+    isMix: false,
   },
   rewindListener: {
     isScroll: false,
@@ -53,6 +59,15 @@ export const playerSlice = createSlice({
     },
     togglePlayerInfo: (state, actions: { payload: boolean }) => {
       state.isShoaInfo = actions.payload
+    },
+    setVolume: (state, actions: { payload: number }) => {
+      state.status.volume = actions.payload
+    },
+    setIsRepeat: (state, actions: { payload: boolean }) => {
+      state.status.isRepeat = actions.payload
+    },
+    setIsMix: (state, actions: { payload: boolean }) => {
+      state.status.isMix = actions.payload
     },
     setSongId: (state, actions: { payload: string }) => {
       const isLoading =
@@ -103,6 +118,9 @@ export const {
   resetAudio,
   setPlayListId,
   setPlayList,
+  setVolume,
+  setIsRepeat,
+  setIsMix,
 } = playerSlice.actions
 
 export default playerSlice.reducer

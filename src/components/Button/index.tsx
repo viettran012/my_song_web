@@ -7,6 +7,7 @@ interface ICirButton {
   onClick?: (event: React.MouseEvent<HTMLElement>) => void
   disabled?: boolean
   isTransparent?: boolean
+  isStopPropagation?: boolean
 }
 
 export const CirButton: React.FC<ICirButton> = ({
@@ -16,9 +17,10 @@ export const CirButton: React.FC<ICirButton> = ({
   onClick,
   disabled = false,
   isTransparent = false,
+  isStopPropagation = true,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation()
+    isStopPropagation && e.stopPropagation()
     onClick && onClick(e)
   }
 
