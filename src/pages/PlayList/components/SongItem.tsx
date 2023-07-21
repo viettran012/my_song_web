@@ -148,7 +148,7 @@ export const SongItemCard: React.FC<IProps> = memo(
       <div
         className={`group song-playlist-item-player-${
           song?.encodeId
-        } border-b border-neutral-900 h-14 px-2 flex items-center justify-between ${
+        } border-b border-neutral-900 h-16 px-2 flex items-center justify-between cursor-all-scroll ${
           isFocus ? "bg-grayL" : ""
         }`}
       >

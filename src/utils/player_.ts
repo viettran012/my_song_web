@@ -4,9 +4,11 @@ import {
   rewindSong,
   setIsMix,
   setIsRepeat,
+  setPlayList,
   setStatus,
   setVolume,
 } from "../features/player/playerSlice"
+import handleData from "./handleData"
 import { setSong } from "./playSong"
 
 export const player_ = {
@@ -22,6 +24,10 @@ export const player_ = {
   },
   toggleMix: function () {
     store?.dispatch(setIsMix(!store?.getState()?.player?.status?.isMix))
+  },
+  mix: function () {
+    const playlist_ = handleData.shuffle(store?.getState()?.player?.playList)
+    store?.dispatch(setPlayList(playlist_))
   },
   setVolume: function (volume: number) {
     store?.dispatch(setVolume(volume || 0))
