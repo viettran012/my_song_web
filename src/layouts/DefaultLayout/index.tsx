@@ -30,7 +30,6 @@ const DefaultLayout: React.FC<IProps> = ({ children }) => {
           <div className="max-w-7xl w-full">{children}</div>
         </div>
       </div>
-      <PlayScreen />
     </>
   )
 }

@@ -13,6 +13,11 @@
   border-radius: 0px;
 }
 
+.card-main-view-player::-webkit-scrollbar-track {
+  border-left: 1px var(--border-main) transparent;
+  border-radius: 0px;
+}
+
 ::-webkit-scrollbar-thumb {
   background: var(--gray-main);
   border-radius: 0;

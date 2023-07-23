@@ -9,7 +9,9 @@ import { ConfigProvider } from "antd"
 import { theme } from "./configs/antdConfig"
 import { ThemeProvider } from "@mui/material"
 import { theme_ } from "./configs/muiConfig"
+import keyEventConfig from "./configs/keyEvent"
 i18nConfig()
+keyEventConfig()
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>

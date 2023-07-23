@@ -10,10 +10,11 @@ import { playSong, setSong } from "../../../utils/playSong"
 import { player_ } from "../../../utils/player_"
 import { showPlayer } from "../../../utils/ui"
 import SongItem, { SongItemCard } from "./SongItem"
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo, useCallback } from "react"
 import React, { Component } from "react"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { createPlayerHref } from "../../../utils/createHref"
+import Artists from "../../../components/Artists"
 
 interface SongListProps {
   list: ISong[]
@@ -34,7 +35,12 @@ const SongList: React.FC<SongListProps> = ({ list, id }) => {
   return (
     <div className="mt-14">
       {list.map((song, index) => (
-        <SongItem handlePlaySong={handlePlaySong} key={index} song={song} />
+        <SongItem
+          handlePlaySong={handlePlaySong}
+          key={index}
+          song={song}
+          playListId={id}
+        />
       ))}
     </div>
   )
@@ -101,24 +107,55 @@ interface SongListLaysProps {
 // }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-
-const SongListLays: React.FC<SongListLaysProps> = ({ id }) => {
+const SongListLaysTitle: React.FC = () => {
+  const listInfo = useAppSelector((state) => state?.player?.playListInfo)
   const list = useAppSelector((state) => state?.player?.playList)
+  const songId = useAppSelector((state) => state?.player?.songId)
+  const index = list?.findIndex((s) => s?.encodeId == songId)
+  return listInfo?.title ? (
+    <div className="">
+      <div className="h-12 text-sm px-2 text-whiteT1 rounded-tl-none rounded-tr-none border border-t-0 border-neutral-800 flex items-center justify-between relative z-10">
+        <div className="pr-5">
+          {index + 1}/{list?.length}
+        </div>
+        <div className="overflow-hidden h-full whitespace-nowrap flex flex-col justify-center">
+          <div>Playlist ‧ {listInfo?.title}</div>
+          <div>{/* <Artists artists={listInfo?.artists || []} /> */}</div>
+        </div>
+      </div>
+    </div>
+  ) : null
+}
+
+const SongListLays: React.FC<SongListLaysProps> = memo(function SongListLays({
+  id,
+}) {
+  const list = useAppSelector((state) => state?.player?.playList)
+  const currSong = useAppSelector((state) => state?.player?.songId)
+  const isPlaying_ = useAppSelector((state) => state.player.status.isPlaying)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const dispath = useAppDispatch()
   const navigate = useNavigate()
 
-  const handlePlaySong = (song: ISong, isPlaying?: boolean) => {
-    showPlayer(true)
+  const handlePlaySong = useCallback(
+    (song: ISong, isPlaying?: boolean) => {
+      showPlayer(true)
 
-    if (!isPlaying) {
-      // setSong({ id: song.encodeId, playListId: id })
-      navigate(createPlayerHref(song?.encodeId))
-      player_.play()
-    } else {
-      player_.pause()
-    }
-  }
+      if (!isPlaying) {
+        setSong({ id: song.encodeId, playListId: id })
+        navigate(
+          createPlayerHref(
+            song?.encodeId,
+            store?.getState()?.player?.playListId,
+          ),
+        )
+        player_.play()
+      } else {
+        player_.pause()
+      }
+    },
+    [id],
+  )
 
   const onDragEnd = (newList: ISong[]) => {
     if (newList?.length) {
@@ -127,15 +164,17 @@ const SongListLays: React.FC<SongListLaysProps> = ({ id }) => {
   }
 
   useEffect(() => {
-    setIsLoading(false)
+    setTimeout(() => setIsLoading(false), 500)
+    // setIsLoading(false)
   }, [list])
 
   useEffect(() => {
     if (!id) return setIsLoading(false)
     setIsLoading(true)
   }, [id])
+
   return isLoading ? (
-    <div className="w-full h-full py-5 flex justify-center items-center">
+    <div className="w-full h-full py-5 flex justify-center">
       <Loader />
     </div>
   ) : (
@@ -145,20 +184,21 @@ const SongListLays: React.FC<SongListLaysProps> = ({ id }) => {
         onDragEnd={onDragEnd}
         renderList={list}
         renderItem={(song, index) => {
+          const isPlaying = currSong == song?.encodeId && isPlaying_
           return (
             <SongItemCard
+              isPlaying={isPlaying}
+              isFocus={currSong == song?.encodeId}
               handlePlaySong={handlePlaySong}
               key={index}
-              song={song}
+              id={song?.encodeId}
+              // song={song}
             />
           )
         }}
       />
-      {/* {list.map((song, index) => (
-        <SongItemCard handlePlaySong={handlePlaySong} key={index} song={song} />
-      ))} */}
     </div>
   )
-}
+})
 
-export { SongList, SongListLays }
+export { SongList, SongListLays, SongListLaysTitle }

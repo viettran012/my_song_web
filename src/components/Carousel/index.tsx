@@ -7,6 +7,8 @@ interface Iprops {
   title: string
   items: any[]
   renderItem: (item: any, index: number) => ReactNode
+  titleSize?: string
+  titleCenter?: boolean
 }
 
 interface IScrollActive {
@@ -22,7 +24,13 @@ interface IOffset {
   currIndex: number
 }
 
-const Carousel: React.FC<Iprops> = ({ title, items, renderItem }) => {
+const Carousel: React.FC<Iprops> = ({
+  title,
+  titleSize = "3xl",
+  items,
+  renderItem,
+  titleCenter = false,
+}) => {
   const scrollRef = useRef<HTMLInputElement>(null)
   const offsetRef = useRef<HTMLInputElement>(null)
 
@@ -93,8 +101,10 @@ const Carousel: React.FC<Iprops> = ({ title, items, renderItem }) => {
   return items?.length ? (
     <div className="overscroll-x-none">
       <div className="py-6 flex justify-between relative">
-        <SectionTitle title={title} />
-        <div className="flex absolute right-0 bottom-3">
+        <SectionTitle title={title} fontSize={titleSize} />
+        <div
+          className={`flex right-0 bottom-3 ${titleCenter ? "" : "absolute"}`}
+        >
           <CirButton
             disabled={!scrollActive.left}
             onClick={() => handleScrollPress("left")}

@@ -1,6 +1,6 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { ISong } from "../../types/item"
-import { ReactNode } from "react"
+import { ReactNode, memo } from "react"
 
 const grid = 0
 
@@ -103,4 +103,4 @@ const DragDrop: React.FC<IProps> = ({
   )
 }
 
-export default DragDrop
+export default memo(DragDrop)

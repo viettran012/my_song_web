@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import getPlayListInfoService from "../services/playListService"
-import { setPlayList } from "../features/player/playerSlice"
+import { setPlayList, setPlayListInfo } from "../features/player/playerSlice"
 
 const usePlaylistFw = () => {
   const dispatch = useAppDispatch()
@@ -12,6 +12,7 @@ const usePlaylistFw = () => {
       .then((fb) => {
         if (fb?.result == 1) {
           dispatch(setPlayList(fb?.data?.data?.song?.items))
+          dispatch(setPlayListInfo(fb?.data?.data))
         } else {
           dispatch(setPlayList([]))
         }

@@ -3,8 +3,24 @@ export interface IBanner {
 }
 
 export interface IArtists {
+  id: string
   name: string
   playlistId: string | number
+  thumbnailM: string
+  totalFollow: number
+  alias: string
+}
+export interface IArtistInfo {
+  biography?: string
+  realname?: string
+  birthday?: string
+  national?: string
+  sections?: IPlayListArr[]
+}
+
+export interface IPlayListArr {
+  items: IPlayListItem[]
+  sectionType?: string
 }
 
 export interface ILyricWord {
@@ -24,6 +40,15 @@ export interface IPlayList {
   artists?: IArtists[]
   song?: ISongList
   sortDescription?: string
+  sectionType?: string
+  encodeId?: string
+}
+
+export interface IPlayListItem {
+  thumbnailM: string
+  title: string
+  artists: IArtists[]
+  encodeId: string
 }
 
 export interface ISong {
@@ -49,6 +74,7 @@ export interface IPath {
 
 export interface ISongInfo {
   artists?: IArtists[]
+  artist?: IArtists
   artistsNames?: string
   duration?: number
   thumbnailM?: string

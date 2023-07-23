@@ -7,7 +7,7 @@ import { AiOutlineMore } from "react-icons/ai"
 import { CirButton } from "../../../components/Button"
 import { PiHeartLight } from "react-icons/pi"
 import { IoVolumeHighOutline } from "react-icons/io5"
-import { useEffect, memo } from "react"
+import { useEffect, memo, useRef } from "react"
 
 import { FaPause, FaPlay } from "react-icons/fa"
 
@@ -15,10 +15,12 @@ import { SONG_ACTION } from "../../../items/ACTION_ITEM"
 import { useAppSelector } from "../../../app/hooks"
 import { IoMdPause } from "react-icons/io"
 import Loader from "../../../components/Loader"
+import store from "../../../app/store"
 
 interface IProps {
   song: ISong
   handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+  playListId: string
 }
 
 interface IInfoThumbProps {
@@ -57,8 +59,12 @@ const InfoThumb: React.FC<IInfoThumbProps> = ({ isFocus, isPlaying }) => {
   )
 }
 
-const SongItem: React.FC<IProps> = ({ song, handlePlaySong = () => {} }) => {
-  const href = createPlayerHref(song?.encodeId)
+const SongItem: React.FC<IProps> = ({
+  song,
+  handlePlaySong = () => {},
+  playListId,
+}) => {
+  const href = createPlayerHref(song?.encodeId, playListId)
   const songId = useAppSelector((state) => state.player.songId)
   const isPlaying_ = useAppSelector((state) => state.player.status.isPlaying)
   const isLoading = useAppSelector((state) => state.player?.status?.isLoading)
@@ -122,19 +128,28 @@ const SongItem: React.FC<IProps> = ({ song, handlePlaySong = () => {} }) => {
   )
 }
 
-export const SongItemCard: React.FC<IProps> = memo(
-  ({ song, handlePlaySong = () => {} }) => {
-    const href = createPlayerHref(song?.encodeId)
-    const songId = useAppSelector((state) => state.player.songId)
-    const isPlaying_ = useAppSelector((state) => state.player.status.isPlaying)
+interface ISongItemCard {
+  id: string
+  handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+  isFocus: boolean
+  isPlaying: boolean
+}
 
-    const isPlaying = songId == song?.encodeId && isPlaying_
-    const isFocus = songId == song?.encodeId
+export const SongItemCard: React.FC<ISongItemCard> = memo(
+  ({ id, isFocus, isPlaying, handlePlaySong = () => {} }) => {
+    const song = useAppSelector((state) =>
+      state.player?.playList?.find((songItem) => songItem?.encodeId == id),
+    )
+    if (!song) return null
 
+    const href = createPlayerHref(
+      song?.encodeId,
+      store?.getState()?.player?.playListId,
+    )
     useEffect(() => {
-      if (songId && isFocus) {
+      if (isFocus) {
         const element = document.querySelector(
-          `.song-playlist-item-player-${songId}`,
+          `.song-playlist-item-player-${song?.encodeId}`,
         )
         element &&
           element.scrollIntoView({
@@ -142,7 +157,7 @@ export const SongItemCard: React.FC<IProps> = memo(
             block: "center",
           })
       }
-    }, [songId])
+    }, [isFocus])
 
     return (
       <div
@@ -156,7 +171,7 @@ export const SongItemCard: React.FC<IProps> = memo(
           <div>
             <div
               onClick={() => handlePlaySong(song, isPlaying)}
-              className="h-9 w-9 mr-4 relative cursor-pointer"
+              className="h-10 w-10 mr-4 relative cursor-pointer"
             >
               <img
                 loading="lazy"
@@ -204,5 +219,81 @@ export const SongItemCard: React.FC<IProps> = memo(
     )
   },
 )
+
+interface IPropsSongRelated {
+  song: ISong
+  handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+}
+
+export const SongItemRelated: React.FC<IPropsSongRelated> = ({
+  song,
+  handlePlaySong = () => {},
+}) => {
+  // console.log("related-song-rerender")
+  const href = createPlayerHref(song?.encodeId)
+  const songId = useAppSelector((state) => state.player.songId)
+  const isPlaying_ = useAppSelector((state) => state.player.status.isPlaying)
+  const isLoading = useAppSelector((state) => state.player?.status?.isLoading)
+
+  const isPlaying = songId == song?.encodeId && isPlaying_
+  const isFocus = songId == song?.encodeId
+
+  return (
+    <div
+      className={`group border-b border-neutral-900 h-16 px-2 flex items-center justify-between ${
+        isFocus ? "bg-grayL" : ""
+      }`}
+    >
+      <div className="flex items-center flex-a2 overflow-hidden mr-4">
+        <div>
+          <div
+            onClick={() => handlePlaySong(song, isPlaying)}
+            className="h-10 w-10 mr-4 relative cursor-pointer"
+          >
+            <img
+              loading="lazy"
+              src={song.thumbnailM}
+              alt="song-thumbnail"
+              className="rounded-sm h-full object-cover"
+            />
+            <InfoThumb isFocus={isFocus} isPlaying={isPlaying} />
+          </div>
+        </div>
+        <div>
+          <Link to={href}>
+            <div
+              onClick={() => handlePlaySong(song)}
+              className="font-semibold whitespace-nowrap cursor-pointer"
+            >
+              <div>{song?.title}</div>
+            </div>
+          </Link>
+          <div className="text-whiteT1 text-sm flex items-center whitespace-nowrap">
+            <Artists artists={song?.artists} />
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <div className="text-whiteT1 flex items-center">
+          <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
+            {SONG_ACTION.map((item, index) => {
+              const Icon = item?.icon
+              return (
+                <div key={index} className="mr-1">
+                  <CirButton isTransparent={true}>
+                    <Icon className="text-2xl" />
+                  </CirButton>
+                </div>
+              )
+            })}
+          </div>
+          {/* <div className="text-sm">
+            {getTime.caculateTimeFM(song?.duration)}
+          </div> */}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default SongItem

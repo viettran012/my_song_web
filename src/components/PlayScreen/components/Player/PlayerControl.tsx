@@ -12,6 +12,8 @@ import { DurationSong, DurationSongSlider } from "./parts/DurationSong"
 import Loader from "../../../Loader"
 import { setStatus } from "../../../../features/player/playerSlice"
 import { VolumeListenner } from "./parts/VolumeTrack"
+import toast, { Toaster } from "react-hot-toast"
+import { InfoToast } from "../../../Toast"
 
 interface IProps {}
 
@@ -29,7 +31,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
   const CONTROL_ITEM = [
     {
       icon: AiOutlineStepBackward,
-      size: 25,
+      size: 20,
       bRadius: 40,
       callback: (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
@@ -38,7 +40,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
     },
     {
       icon: isLoading ? Loader : isPlaying ? IoMdPause : ImPlay3,
-      size: 35,
+      size: 32,
       fill: "#43bcff",
       bRadius: 50,
       callback: (e: React.MouseEvent<HTMLElement>) => {
@@ -49,7 +51,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
     },
     {
       icon: AiOutlineStepForward,
-      size: 25,
+      size: 20,
       bRadius: 40,
       callback: (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
@@ -66,6 +68,11 @@ const PlayerControl: React.FC<IProps> = memo(() => {
         setAudio(fb?.data?.data)
       } else {
         setAudio({})
+        toast.custom(
+          (t) => <InfoToast t={t} infoText="Không thể phát bài hát" />,
+          { duration: 3000 },
+        )
+        player_.next()
       }
     })
   }, [songId])
@@ -80,7 +87,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
     if (audioRef.current) {
       audioRef.current.currentTime = rewind || 0
     }
-  }, [rewind])
+  }, [rewind, key])
 
   useEffect(() => {
     if (audioRef.current) {
@@ -100,7 +107,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
 
   return (
     <>
-      <div className="flex h-full justify-center items-center px-4">
+      <div className="flex h-full justify-center items-center px-3">
         <audio key={audio[128]} src={audio[128]} ref={audioRef} />
         <div className="flex justify-center items-center">
           {CONTROL_ITEM?.map((item, index) => {
@@ -113,7 +120,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
                 onClick={item.callback}
                 radius={item.bRadius}
                 isTransparent
-                styles={{ margin: "0 4px" }}
+                styles={{ margin: "0 8px" }}
               >
                 <Icon {...loadingProps} size={item.size} />
               </CirButton>

@@ -18,9 +18,6 @@ const Player: React.FC<IProps> = ({}) => {
 
   const Component = route?.component || Home
 
-  const [searchParams, setSearchParams] = useSearchParams()
-  const location = useLocation()
-
   useEffect(() => {}, [])
   return <Component />
 }

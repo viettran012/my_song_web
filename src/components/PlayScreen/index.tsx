@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
-import { useAppSelector } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { showPlayerInfo } from "../../utils/ui"
 import { createPlayerHref } from "../../utils/createHref"
-import { useEffect, useState, memo } from "react"
+import React, { useEffect, useState, memo, ReactNode } from "react"
 import getSongService, {
   getSongInfoService,
 } from "../../services/getSongService"
@@ -14,11 +14,15 @@ import { DurationSongSlider } from "./components/Player/parts/DurationSong"
 import { player_ } from "../../utils/player_"
 import Lays from "./components/Lays"
 import usePlaylistFw from "../../hooks/usePlaylistFw"
+import { setSongInfo } from "../../features/player/playerSlice"
+import store from "../../app/store"
+import setMediaSession from "../../utils/setMediaSession"
 
 interface IProps {}
 
 export const PlayScreen: React.FC<IProps> = memo(() => {
   const navigate = useNavigate()
+  const dispath = useAppDispatch()
   usePlaylistFw()
   const isShowInfo = useAppSelector((state) => state.player.isShoaInfo)
   const isShow = useAppSelector((state) => state.player.isShow)
@@ -35,7 +39,9 @@ export const PlayScreen: React.FC<IProps> = memo(() => {
             ? `${route?.currentPath?.pathname}` + `${route.currentPath.search}`
             : "/",
         )
-      : navigate(createPlayerHref(songId))
+      : navigate(
+          createPlayerHref(songId, store?.getState()?.player?.playListId),
+        )
   }
 
   useEffect(() => {
@@ -45,7 +51,20 @@ export const PlayScreen: React.FC<IProps> = memo(() => {
     getSongInfoService(songId)
       .then((fb) => {
         if (fb?.result == 1) {
-          setSong(fb?.data?.data)
+          const song: ISongInfo = fb?.data?.data
+          setSong(song)
+          dispath(setSongInfo(song))
+          document.title = store?.getState()?.player?.status?.isPlaying
+            ? song?.title
+              ? `${song?.title} - ${song?.artistsNames}`
+              : "Solfive"
+            : "Solfive"
+
+          setMediaSession({
+            artist: song?.artistsNames,
+            title: song?.title || "Solfive",
+            thumb: song?.thumbnailM,
+          })
         } else {
         }
         setIsLoading(false)
@@ -61,7 +80,7 @@ export const PlayScreen: React.FC<IProps> = memo(() => {
         <div
           className={`transition-all duration-300 fixed z-10 ${
             isShowInfo ? "top-header" : "top-[100vh]"
-          } left-0 right-0 bottom-playcard bg-black flex flex-col`}
+          } left-0 right-0 bottom-playcard bg-black flex justify-center`}
         >
           <Lays song={song} isLoading={isLoading} />
         </div>

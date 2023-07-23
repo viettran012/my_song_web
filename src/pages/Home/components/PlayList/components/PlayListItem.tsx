@@ -15,7 +15,7 @@ interface IProps {
   item: IItem
 }
 
-const BannerItem: React.FC<IProps> = ({ item }) => {
+const PlayListItem: React.FC<IProps> = ({ item }) => {
   const href = createPlayListHref(item?.encodeId)
 
   return (
@@ -45,4 +45,4 @@ const BannerItem: React.FC<IProps> = ({ item }) => {
   )
 }
 
-export default BannerItem
+export default PlayListItem

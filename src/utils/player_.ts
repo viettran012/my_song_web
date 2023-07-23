@@ -10,14 +10,24 @@ import {
 } from "../features/player/playerSlice"
 import handleData from "./handleData"
 import { setSong } from "./playSong"
+import { history } from "../_helper"
+import { createPlayerHref } from "./createHref"
 
 export const player_ = {
   toggle: function () {
+    const song = store?.getState()?.player?.songInfo
+
     store?.dispatch(
       setStatus({
         isPlaying: !store?.getState()?.player?.status?.isPlaying,
       }),
     )
+
+    document.title = store?.getState()?.player?.status?.isPlaying
+      ? song?.title
+        ? `${song?.title} - ${song?.artistsNames}`
+        : "Solfive"
+      : "Solfive"
   },
   toggleRepeat: function () {
     store?.dispatch(setIsRepeat(!store?.getState()?.player?.status?.isRepeat))
@@ -33,10 +43,15 @@ export const player_ = {
     store?.dispatch(setVolume(volume || 0))
   },
   play: function () {
+    const song = store?.getState()?.player?.songInfo
     store?.dispatch(setStatus({ isPlaying: true }))
+    document.title = song?.title
+      ? `${song?.title} - ${song?.artistsNames}`
+      : "Solfive"
   },
   pause: function () {
     store?.dispatch(setStatus({ isPlaying: false }))
+    document.title = "Solfive"
   },
   rewind: function (props: { to?: number; isScroll?: boolean }) {
     store?.dispatch(rewindSong(props))
@@ -52,6 +67,7 @@ export const player_ = {
     }, 500)
   },
   next: function () {
+    const navigate = history?.navigate
     const playerState = store?.getState()?.player
     const isMix = playerState?.status?.isMix
     const playlist = playerState?.playList || []
@@ -72,9 +88,17 @@ export const player_ = {
       )
     }
 
-    setSong({ id: nextSong?.encodeId || playlist[0]?.encodeId })
+    navigate(
+      createPlayerHref(
+        nextSong?.encodeId || playlist[0]?.encodeId,
+        store?.getState()?.player?.playListId,
+      ),
+    )
+
+    // setSong({ id: nextSong?.encodeId || playlist[0]?.encodeId })
   },
   pre: function () {
+    const navigate = history?.navigate
     const playerState = store?.getState()?.player
     const currSong = playerState?.songId
     const playlist = playerState?.playList || []
@@ -82,9 +106,16 @@ export const player_ = {
       (_, index) => playlist[index + 1]?.encodeId == currSong,
     )
 
-    setSong({
-      id: nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
-    })
+    navigate(
+      createPlayerHref(
+        nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
+        store?.getState()?.player?.playListId,
+      ),
+    )
+
+    // setSong({
+    //   id: nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
+    // })
   },
   ready: function () {
     store?.dispatch(setStatus({ isLoading: false }))
