@@ -15,7 +15,7 @@ const useHistory = () => {
   const path: IPath = useLocation()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
-  const playListId = useAppSelector((state) => state.player?.playListId)
+  // const playListId = useAppSelector((state) => state.player?.playListId)
 
   history.navigate = navigate
 
@@ -32,8 +32,8 @@ const useHistory = () => {
     } else {
       const id = searchParams.get("id") || ""
       const playListId_ = searchParams.get("listId") || ""
-
-      playSong({ id, playListId: playListId || playListId_ || "000" })
+      // console.log(playListId_)
+      playSong({ id, playListId: playListId_ || "000" })
     }
   }, [path])
 

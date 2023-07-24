@@ -40,7 +40,7 @@ function App() {
                   element={
                     <Layout>
                       <Page />
-                      <PlayScreen />
+                      {/* <PlayScreen /> */}
                       <MiniLays />
                     </Layout>
                   }

@@ -8,6 +8,7 @@ import setLoadingPage from "../../utils/setLoadingPage"
 import { PlayListVariants } from "./components/PlayListVariants"
 import { SongList } from "./components/SongList"
 import routesConfig from "../../configs/routes"
+import SectionTitle from "../../components/SectionTitle"
 
 interface IProps {}
 
@@ -36,21 +37,26 @@ const PlayList: React.FC<IProps> = ({}) => {
     getPlayListInfoService(id_)
       .then((fb) => {
         setLoading(false)
-        if (fb?.result == 1) setData(fb?.data?.data)
+        if (fb?.result == 1) {
+          setData(fb?.data?.data)
+        } else setData({})
       })
       .catch((error) => {
         setLoading(false)
       })
   }, [searchParams])
+
   return (
     <div>
       {isLoading ? (
         <PlayListVariants />
-      ) : (
+      ) : data?.song ? (
         <div className="py-7">
           <PlayListBsInfo data={data} />
           <SongList list={data?.song?.items || []} id={id.current} />
         </div>
+      ) : (
+        <SectionTitle title="Playlist không tồn tại hoặc bị xoá" />
       )}
     </div>
   )

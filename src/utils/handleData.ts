@@ -28,6 +28,9 @@ const handleData = {
 
     return tempArray
   },
+  stringLimit: function (string: string, limit: number) {
+    return string?.slice(0, limit) + "..."
+  },
 }
 
 export default handleData

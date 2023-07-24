@@ -7,7 +7,10 @@ const usePlaylistFw = () => {
   const dispatch = useAppDispatch()
   const id = useAppSelector((state) => state?.player?.playListId)
   useEffect(() => {
-    if (!id) return
+    if (!id) {
+      dispatch(setPlayList([]))
+      return
+    }
     getPlayListInfoService(id)
       .then((fb) => {
         if (fb?.result == 1) {

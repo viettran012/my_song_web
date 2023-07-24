@@ -112,7 +112,7 @@ const SongListLaysTitle: React.FC = () => {
   const list = useAppSelector((state) => state?.player?.playList)
   const songId = useAppSelector((state) => state?.player?.songId)
   const index = list?.findIndex((s) => s?.encodeId == songId)
-  return listInfo?.title ? (
+  return listInfo?.title && list?.length ? (
     <div className="">
       <div className="h-12 text-sm px-2 text-whiteT1 rounded-tl-none rounded-tr-none border border-t-0 border-neutral-800 flex items-center justify-between relative z-10">
         <div className="pr-5">

@@ -52,7 +52,11 @@ const LyricLays: React.FC<IProps> = ({ isSingle = false }) => {
           setLyricData([
             {
               words: [
-                { data: "Không có lời bài hát", endTime: 0, startTime: 0 },
+                {
+                  data: "Không có lời bài hát",
+                  endTime: 9999999999,
+                  startTime: 0,
+                },
               ],
             },
           ])

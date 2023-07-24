@@ -46,3 +46,48 @@ export const CirButton: React.FC<ICirButton> = ({
     </div>
   )
 }
+
+interface Button {
+  children: ReactNode
+  radius?: string | number
+  styles?: CSSProperties
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void
+  disabled?: boolean
+  isTransparent?: boolean
+  isStopPropagation?: boolean
+  isRadius?: boolean
+}
+
+export const Button: React.FC<ICirButton> = ({
+  children,
+  radius = "40px",
+  styles,
+  onClick,
+  disabled = false,
+  isTransparent = false,
+  isStopPropagation = true,
+  isRadius = false,
+}) => {
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    isStopPropagation && e.stopPropagation()
+    onClick && onClick(e)
+  }
+
+  return (
+    <div
+      onClick={handleClick}
+      className={`cursor-pointer transition-all px-3 py-1 ${
+        isRadius ? "rounded-full" : "rounded-sm"
+      } flex justify-center items-center border active:scale-90 ${
+        !isTransparent ? "border-bdm" : "border-transparent"
+      } hover:bg-whv`}
+      style={{
+        pointerEvents: disabled ? "none" : "auto",
+        opacity: disabled ? 0.3 : 1,
+        ...styles,
+      }}
+    >
+      {children}
+    </div>
+  )
+}

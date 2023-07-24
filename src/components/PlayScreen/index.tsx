@@ -28,6 +28,7 @@ export const PlayScreen: React.FC<IProps> = memo(() => {
   const isShow = useAppSelector((state) => state.player.isShow)
   const songId = useAppSelector((state) => state.player.songId)
   const route = useAppSelector((state) => state.routes.pay)
+  const isSidebarExpand = useAppSelector((state) => state.ui.sidebarExpand)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [song, setSong] = useState<ISongInfo>({})
@@ -78,16 +79,20 @@ export const PlayScreen: React.FC<IProps> = memo(() => {
     isShow && (
       <>
         <div
-          className={`transition-all duration-300 fixed z-10 ${
+          className={`transition-top duration-300 fixed z-40 ${
             isShowInfo ? "top-header" : "top-[100vh]"
-          } left-0 right-0 bottom-playcard bg-black flex justify-center`}
+          } ${
+            isSidebarExpand
+              ? "left-sidebar-width-expand"
+              : "left-sidebar-width-narrow"
+          } right-0 bottom-playcard bg-black flex justify-center`}
         >
           <Lays song={song} isLoading={isLoading} />
         </div>
 
         <div
           onClick={handleToggleShowInfo}
-          className={` animate__animated animate__slideInUp h-playcard fixed z-20 bg-grayL bottom-0 left-0 right-0  ${
+          className={` animate__animated animate__slideInUp h-playcard fixed z-40 bg-grayL bottom-0 left-0 right-0  ${
             isShowInfo ? "pr-[12px]" : ""
           }`}
         >

@@ -9,6 +9,7 @@ const API = {
   SONG_INFO_DETAILT_API: DOMAIN + "/api/get/song/info",
   ARTIST_INFO_API: DOMAIN + "/api/get/artist",
   SONG_INFO_LYRIC_API: DOMAIN + "/api/get/song/lyric",
+  SEARCH_API: DOMAIN + "/api/get/song/search",
   CREATE_PLAYLIST: DOMAIN + "/user/playlist/create",
   UPDATE_PLAYLIST: DOMAIN + "/user/playlist/update",
   LIKE_SONG: DOMAIN + "/user/song/like",

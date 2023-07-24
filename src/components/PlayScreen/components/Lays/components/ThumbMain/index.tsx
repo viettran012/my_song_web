@@ -18,18 +18,20 @@ const ThumbMain: React.FC<IThumbMain> = memo(({ isLoading, song }) => {
     player_?.toggle()
   }
   return (
-    <div className={`flex-1 relative h-full flex justify-center items-center `}>
+    <div
+      className={`flex-1 mr-4 relative h-full flex justify-center items-center `}
+    >
       {isLoading ? (
         <SongImgThumbVariant />
       ) : (
         <div
           onClick={handleClickThumb}
-          className="group cursor-pointer h-full relative overflow-hidden flex justify-center items-center"
+          className="group cursor-pointer h-full w-full relative overflow-hidden flex justify-center items-center"
         >
           <img
             alt="song-thumbnail"
             src={song?.thumbnailM}
-            className="h-full"
+            className="w-full"
             style={{
               backdropFilter: "blur(5px)",
               filter: "blur(5px)",

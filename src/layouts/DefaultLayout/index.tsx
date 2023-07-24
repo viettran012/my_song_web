@@ -4,6 +4,8 @@ import TopLoader from "../../components/TopLoader"
 import { PlayScreen } from "../../components/PlayScreen"
 import useHistory from "../../hooks/useHistory"
 import { useAppSelector } from "../../app/hooks"
+import Sidebar from "./components/Sidebar"
+import MaskColor from "./components/MaskColor"
 
 interface IProps {
   children: ReactNode
@@ -14,6 +16,7 @@ const DefaultLayout: React.FC<IProps> = ({ children }) => {
 
   const isShowInfo = useAppSelector((state) => state.player.isShoaInfo)
   const isShow = useAppSelector((state) => state.player.isShow)
+  const isSidebarExpand = useAppSelector((state) => state?.ui?.sidebarExpand)
 
   return (
     <>
@@ -23,10 +26,17 @@ const DefaultLayout: React.FC<IProps> = ({ children }) => {
         }`}
       >
         <TopLoader />
-        <div className="absolute h-80 bg-body-bg top-0 left-0 right-0 bg-no-repeat bg-cover"></div>
-        <div className="absolute h-80 top-0 left-0 right-0 bg-gradient-to-b from-from-body-bg-gradiant to-to-body-bg-gradiant"></div>
+        <MaskColor />
         <Header />
-        <div className="pt-20 px-20 relative z-10 flex flex-col items-center">
+        <Sidebar />
+        <PlayScreen />
+        <div
+          className={`pt-20 px-24 relative z-10 flex flex-col items-center ${
+            isSidebarExpand
+              ? "ml-sidebar-width-expand"
+              : "ml-sidebar-width-narrow"
+          }`}
+        >
           <div className="max-w-7xl w-full">{children}</div>
         </div>
       </div>

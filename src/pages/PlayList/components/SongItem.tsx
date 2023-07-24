@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom"
-import { ISong } from "../../../types/item"
-import { createPlayListHref, createPlayerHref } from "../../../utils/createHref"
-import Artists from "../../../components/Artists"
+import { IArtists, IPlayList, ISong } from "../../../types/item"
+import {
+  createArtistHref,
+  createPlayListHref,
+  createPlayerHref,
+} from "../../../utils/createHref"
+import Artists, { ArtistsDL } from "../../../components/Artists"
 import getTime from "../../../utils/getTime"
 import { AiOutlineMore } from "react-icons/ai"
 import { CirButton } from "../../../components/Button"
@@ -223,14 +227,16 @@ export const SongItemCard: React.FC<ISongItemCard> = memo(
 interface IPropsSongRelated {
   song: ISong
   handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+  playListId: string
 }
 
 export const SongItemRelated: React.FC<IPropsSongRelated> = ({
   song,
+  playListId,
   handlePlaySong = () => {},
 }) => {
   // console.log("related-song-rerender")
-  const href = createPlayerHref(song?.encodeId)
+  const href = createPlayerHref(song?.encodeId, playListId)
   const songId = useAppSelector((state) => state.player.songId)
   const isPlaying_ = useAppSelector((state) => state.player.status.isPlaying)
   const isLoading = useAppSelector((state) => state.player?.status?.isLoading)
@@ -293,6 +299,192 @@ export const SongItemRelated: React.FC<IPropsSongRelated> = ({
         </div>
       </div>
     </div>
+  )
+}
+
+interface IPropsSongLinkItem {
+  song: ISong
+  handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+  isShowDuration?: boolean
+}
+
+export const SongLinkItem: React.FC<IPropsSongLinkItem> = ({
+  song,
+  isShowDuration = false,
+}) => {
+  // console.log("related-song-rerender")
+  if (!song?.encodeId) return null
+
+  const href = createPlayerHref(song?.encodeId)
+
+  return (
+    <Link to={href}>
+      <div
+        className={`group border-b border-neutral-900 h-14 px-2 flex items-center justify-between hover:bg-grayL`}
+      >
+        <div className="flex items-center flex-a2 overflow-hidden mr-4">
+          <div>
+            <div className="h-9 w-9 mr-4 relative cursor-pointer">
+              <img
+                loading="lazy"
+                src={song.thumbnailM}
+                alt="song-thumbnail"
+                className="rounded-sm h-full object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="font-semibold whitespace-nowrap cursor-pointer">
+              <div>{song?.title}</div>
+            </div>
+
+            <div className="text-whiteT1 text-sm flex items-center whitespace-nowrap">
+              <ArtistsDL artists={song?.artists} />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="text-whiteT1 flex items-center">
+            <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
+              {SONG_ACTION.map((item, index) => {
+                const Icon = item?.icon
+                return (
+                  <div key={index} className="mr-1">
+                    <CirButton isTransparent={true}>
+                      <Icon className="text-2xl" />
+                    </CirButton>
+                  </div>
+                )
+              })}
+            </div>
+            {isShowDuration && (
+              <div className="text-sm">
+                {getTime.caculateTimeFM(song?.duration)}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+interface IPropsPlaylistLinkItem {
+  playlist: IPlayList
+  handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+}
+
+export const PlaylistLinkItem: React.FC<IPropsPlaylistLinkItem> = ({
+  playlist,
+}) => {
+  // console.log("related-song-rerender")
+  if (!playlist?.encodeId) return null
+
+  const href = createPlayListHref(playlist?.encodeId || "")
+
+  return (
+    <Link to={href}>
+      <div
+        className={`group border-b border-neutral-900 h-14 px-2 flex items-center justify-between hover:bg-grayL`}
+      >
+        <div className="flex items-center flex-a2 overflow-hidden mr-4">
+          <div>
+            <div className="h-9 w-9 mr-4 relative cursor-pointer">
+              <img
+                loading="lazy"
+                src={playlist.thumbnailM}
+                alt="song-thumbnail"
+                className="rounded-sm h-full object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="font-semibold whitespace-nowrap cursor-pointer">
+              <div>{playlist?.title}</div>
+            </div>
+
+            <div className="text-whiteT1 text-sm flex items-center whitespace-nowrap">
+              <ArtistsDL artists={playlist?.artists || []} />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="text-whiteT1 flex items-center">
+            <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
+              {SONG_ACTION.map((item, index) => {
+                const Icon = item?.icon
+                return (
+                  <div key={index} className="mr-1">
+                    <CirButton isTransparent={true}>
+                      <Icon className="text-2xl" />
+                    </CirButton>
+                  </div>
+                )
+              })}
+            </div>
+            {/* <div className="text-sm">
+            {getTime.caculateTimeFM(song?.duration)}
+          </div> */}
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+interface IPropsArtistLinkItem {
+  artist: IArtists
+  handlePlaySong?: (song: ISong, isPlaying?: boolean) => void
+}
+
+export const ArtistLinkItem: React.FC<IPropsArtistLinkItem> = ({ artist }) => {
+  // console.log("related-song-rerender")
+  if (!artist?.alias) return null
+  const href = createArtistHref(artist?.alias || "")
+
+  return (
+    <Link to={href}>
+      <div
+        className={`group border-b border-neutral-900 h-14 px-2 flex items-center justify-between hover:bg-grayL`}
+      >
+        <div className="flex items-center flex-a2 overflow-hidden mr-4">
+          <div>
+            <div className="h-9 w-9 mr-4 relative cursor-pointer">
+              <img
+                loading="lazy"
+                src={artist.thumbnailM}
+                alt="song-thumbnail"
+                className="rounded-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="font-semibold whitespace-nowrap cursor-pointer">
+              <div>{artist?.name}</div>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          <div className="text-whiteT1 flex items-center">
+            <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
+              {SONG_ACTION.map((item, index) => {
+                const Icon = item?.icon
+                return (
+                  <div key={index} className="mr-1">
+                    <CirButton isTransparent={true}>
+                      <Icon className="text-2xl" />
+                    </CirButton>
+                  </div>
+                )
+              })}
+            </div>
+            {/* <div className="text-sm">
+            {getTime.caculateTimeFM(song?.duration)}
+          </div> */}
+          </div>
+        </div>
+      </div>
+    </Link>
   )
 }
 

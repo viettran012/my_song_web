@@ -69,6 +69,7 @@ export const player_ = {
   next: function () {
     const navigate = history?.navigate
     const playerState = store?.getState()?.player
+    const isShowing = playerState?.isShoaInfo
     const isMix = playerState?.status?.isMix
     const playlist = playerState?.playList || []
     let nextSong
@@ -88,34 +89,35 @@ export const player_ = {
       )
     }
 
-    navigate(
-      createPlayerHref(
-        nextSong?.encodeId || playlist[0]?.encodeId,
-        store?.getState()?.player?.playListId,
-      ),
-    )
-
-    // setSong({ id: nextSong?.encodeId || playlist[0]?.encodeId })
+    isShowing
+      ? navigate(
+          createPlayerHref(
+            nextSong?.encodeId || playlist[0]?.encodeId,
+            store?.getState()?.player?.playListId,
+          ),
+        )
+      : setSong({ id: nextSong?.encodeId || playlist[0]?.encodeId })
   },
   pre: function () {
     const navigate = history?.navigate
     const playerState = store?.getState()?.player
+    const isShowing = playerState?.isShoaInfo
     const currSong = playerState?.songId
     const playlist = playerState?.playList || []
     const nextSong = playlist?.find(
       (_, index) => playlist[index + 1]?.encodeId == currSong,
     )
 
-    navigate(
-      createPlayerHref(
-        nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
-        store?.getState()?.player?.playListId,
-      ),
-    )
-
-    // setSong({
-    //   id: nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
-    // })
+    isShowing
+      ? navigate(
+          createPlayerHref(
+            nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
+            store?.getState()?.player?.playListId,
+          ),
+        )
+      : setSong({
+          id: nextSong?.encodeId || playlist[playlist?.length - 1]?.encodeId,
+        })
   },
   ready: function () {
     store?.dispatch(setStatus({ isLoading: false }))

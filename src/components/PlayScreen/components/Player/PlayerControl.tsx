@@ -68,11 +68,14 @@ const PlayerControl: React.FC<IProps> = memo(() => {
         setAudio(fb?.data?.data)
       } else {
         setAudio({})
-        toast.custom(
-          (t) => <InfoToast t={t} infoText="Không thể phát bài hát" />,
-          { duration: 3000 },
-        )
-        player_.next()
+
+        setTimeout(() => {
+          toast.custom(
+            (t) => <InfoToast t={t} infoText="Không thể phát bài hát" />,
+            { duration: 3000 },
+          )
+          player_.next()
+        }, 3000)
       }
     })
   }, [songId])

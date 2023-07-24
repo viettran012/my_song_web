@@ -1,15 +1,23 @@
 import { Link, NavLink } from "react-router-dom"
 import FlexTag from "../../../components/FlexTag"
 import HEADER_ITEM from "../../../items/HEADER_ITEM"
-import { CiSearch } from "react-icons/ci"
+import { CiMenuBurger, CiSearch } from "react-icons/ci"
 import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useAppSelector } from "../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { CirButton } from "../../../components/Button"
+import { RxHamburgerMenu } from "react-icons/rx"
+import { VscMenu } from "react-icons/vsc"
+import { toggleSidebar } from "../../../features/ui/uiSlice"
+import Search from "../../../components/Search"
 
 interface Props {}
 
 const Header: React.FC<Props> = ({}) => {
   const { t } = useTranslation()
+  const dispath = useAppDispatch()
+
+  const isExpand = useAppSelector((state) => state?.ui?.sidebarExpand)
   const isShow = useAppSelector((state) => state?.player?.isShoaInfo)
 
   const [isTop, setIsTop] = useState<boolean>(true)
@@ -17,6 +25,10 @@ const Header: React.FC<Props> = ({}) => {
   const handleOnScroll = useCallback(() => {
     setIsTop(!document.documentElement.scrollTop)
   }, [])
+
+  const handleToggleSidebar = () => {
+    dispath(toggleSidebar(!isExpand))
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", handleOnScroll)
@@ -26,39 +38,35 @@ const Header: React.FC<Props> = ({}) => {
 
   return (
     <FlexTag
-      styles={`transition duration-300 fixed h-header top-0 left-0 right-0 border-collapse z-20 border-b ${
-        isTop || isShow ? `border-transparent` : "bg-main-bg border-neutral-800"
-      } ${isShow ? "bg-main-bg pr-[12px]" : ""}`}
+      styles={`transition duration-300 fixed h-header top-0 left-0 right-0 border-collapse z-50 border-b ${
+        isTop && !isShow
+          ? `border-transparent`
+          : "bg-main-bg border-neutral-800"
+      } ${isShow ? "bg-main-bg pr-[12px] border-neutral-800" : ""}`}
     >
-      <Link to={"/"} className="cursor-pointer absolute left-3">
-        <FlexTag>
-          <img alt="logo" src="/logo.png" className="h-7 w-7" />
-          <div className="text-2xl tracking-tighter font-bold ml-1">
-            Solfive
-          </div>
-        </FlexTag>
-      </Link>
+      <div className="cursor-pointer absolute z-20 left-4 flex items-center">
+        <div className="mr-2">
+          <CirButton isTransparent onClick={handleToggleSidebar}>
+            <RxHamburgerMenu size={22} color={"white"} />
+          </CirButton>
+        </div>
+        <Link to={"/"} className="cursor-pointer">
+          <FlexTag>
+            <img alt="logo" src="/logo.png" className="h-7 w-7" />
+            <div className="text-2xl tracking-[-3px] let font-bold ml-1">
+              Solfive
+            </div>
+          </FlexTag>
+        </Link>
+      </div>
 
-      <div className="flex">
-        {HEADER_ITEM?.map((item, index) => {
-          return (
-            <NavLink
-              to={item.href}
-              key={index}
-              className={({ isActive }) =>
-                isActive ? "text-white" : "text-neutral-400"
-              }
-            >
-              <div className=" px-6 text-xl font-bold hover:text-white">
-                {t(item.title)}
-              </div>
-            </NavLink>
-          )
-        })}
-
-        <div className="text-neutral-400 px-6 text-xl font-bold hover:text-white cursor-pointer flex justify-center items-center">
-          <CiSearch size={23} />
-          <div className="ml-3">{t("search")}</div>
+      <div
+        className={`w-full px-24 relative z-10 flex flex-col items-center ${
+          isExpand ? "ml-sidebar-width-expand" : "ml-sidebar-width-narrow"
+        }`}
+      >
+        <div className="max-w-7xl w-full flex">
+          <Search />
         </div>
       </div>
     </FlexTag>

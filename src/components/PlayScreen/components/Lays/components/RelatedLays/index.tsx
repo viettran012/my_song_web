@@ -48,7 +48,7 @@ const RelatedLays: React.FC<IProps> = ({}) => {
 
       if (!isPlaying) {
         setSong({ id: song.encodeId, playListId: String(playListId) || "" })
-        navigate(createPlayerHref(song?.encodeId, playlistInfo?.encodeId))
+        navigate(createPlayerHref(song?.encodeId, String(playListId)))
         player_.play()
       } else {
         player_.pause()
@@ -100,6 +100,7 @@ const RelatedLays: React.FC<IProps> = ({}) => {
                   {songArr?.map((song: ISong, index: number) => {
                     return (
                       <SongItemRelated
+                        playListId={String(playListId)}
                         key={`song-item-${index}`}
                         song={song}
                         handlePlaySong={handlePlaySong}
@@ -123,7 +124,8 @@ const RelatedLays: React.FC<IProps> = ({}) => {
                   ?.filter((pl) => pl?.sectionType == "playlist")
                   ?.reduce((arr: any[], item) => {
                     return [...arr, ...item?.items]
-                  }, []) || []
+                  }, [])
+                  ?.reverse() || []
               }
               title="Danh sách phát đề xuất"
               renderItem={(playlist, index) => (

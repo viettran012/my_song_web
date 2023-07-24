@@ -4,6 +4,8 @@ interface IRoute {
   library: string
   playlist: string
   player: string
+  artist: string
+  search: string
 }
 
 const routesConfig: IRoute = {
@@ -12,6 +14,8 @@ const routesConfig: IRoute = {
   library: "/library",
   playlist: "/playlist",
   player: "/player",
+  artist: "/artist",
+  search: "/search",
 }
 
 export default routesConfig

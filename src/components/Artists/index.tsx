@@ -1,9 +1,26 @@
 import { Link } from "react-router-dom"
 import { IArtists } from "../../types/item"
-import { createPlayListHref } from "../../utils/createHref"
+import { createArtistHref, createPlayListHref } from "../../utils/createHref"
 
 interface IProps {
   artists: IArtists[]
+}
+
+export const ArtistsDL: React.FC<IProps> = ({ artists }) => {
+  return (
+    <div>
+      {artists?.map((item, index) =>
+        index < 3 ? (
+          <span key={index}>
+            {`${item?.name}${index == artists?.length - 1 ? "" : ","} `}
+          </span>
+        ) : (
+          ""
+        ),
+      )}
+      {artists?.length > 3 ? "..." : ""}
+    </div>
+  )
 }
 
 const Artists: React.FC<IProps> = ({ artists }) => {
@@ -13,7 +30,7 @@ const Artists: React.FC<IProps> = ({ artists }) => {
         index < 3 ? (
           <Link
             key={index}
-            to={createPlayListHref(item?.playlistId)}
+            to={createArtistHref(item?.alias)}
             className="hover:underline"
           >
             {`${item?.name}${index == artists?.length - 1 ? "" : ","} `}
@@ -32,7 +49,7 @@ interface IArtistsItem {
 }
 
 export const ArtistsItem: React.FC<IArtistsItem> = ({ artist }) => {
-  const href = createPlayListHref(artist?.playlistId)
+  const href = createArtistHref(artist?.alias)
   // console.log(artist)
   return (
     <div className="mr-6 w-40">

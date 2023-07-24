@@ -1,5 +1,6 @@
 export interface IBanner {
   banner: string
+  type: number
 }
 
 export interface IArtists {
@@ -16,6 +17,10 @@ export interface IArtistInfo {
   birthday?: string
   national?: string
   sections?: IPlayListArr[]
+  thumbnailM?: string
+  name?: string
+  song?: ISongList
+  playListInfo?: IPlayList
 }
 
 export interface IPlayListArr {
@@ -31,6 +36,12 @@ export interface ILyricWord {
 
 export interface ILyric {
   words: ILyricWord[]
+}
+
+export interface ISearchRs {
+  songs?: ISong[]
+  playlists?: IPlayList[]
+  artists?: IArtists[]
 }
 
 export interface IPlayList {

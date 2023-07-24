@@ -6,11 +6,21 @@ module.exports = {
       spacing: {
         header: "64px",
         playcard: "72px",
+        "header-search": "440px",
+        "sidebar-width-expand": "240px",
+        "sidebar-width-narrow": "72px",
       },
       colors: {
+        "white-opacity-10": "#ffffff10",
+        "white-opacity-15": "#ffffff15",
+        "white-opacity-17": "#ffffff17",
+        "white-opacity-20": "#ffffff20",
+        "white-opacity-25": "#ffffff25",
+        "white-opacity-30": "#ffffff30",
         "border-bottom-color": "#1d1d1d",
         "main-bg": "#030303",
         "from-body-bg-gradiant": "rgba(0,0,0,0.75)",
+        "from-body-bg-gradiant-l": "rgba(0,0,0,0.85)",
         "from-body-bg-gradiant-l1": "rgba(0,0,0,0.35)",
         "to-body-bg-gradiant": "#000000",
         purple: "#6626f9",
@@ -28,6 +38,9 @@ module.exports = {
       flex: {
         a2: "2",
         a3: "3",
+      },
+      transitionProperty: {
+        top: "top",
       },
       keyframes: {
         fadeIn: {

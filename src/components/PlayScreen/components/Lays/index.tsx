@@ -17,8 +17,8 @@ const Lays: React.FC<IProps> = memo(function Lays({ song, isLoading }) {
 
   return (
     <div
-      className={`w-full h-full pt-6 px-20 z-10 flex justify-center ${
-        isShowInfo ? "pr-[92px]" : ""
+      className={`w-full h-full pt-6 px-14 z-10 flex justify-center ${
+        isShowInfo ? "pr-[68px]" : ""
       }`}
     >
       <div className="w-full h-full max-w-7xl flex">

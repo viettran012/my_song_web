@@ -28,6 +28,8 @@ export const setSong = ({ id = "", playListId = "" }: IPlaySongProps) => {
         const playListId = song?.album?.encodeId
 
         store.dispatch(setPlayListId(playListId || ""))
+      } else {
+        store.dispatch(setPlayListId(""))
       }
     })
   } else
