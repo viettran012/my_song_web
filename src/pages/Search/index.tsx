@@ -45,7 +45,7 @@ const Search: React.FC<IProps> = ({}) => {
     const isValidRerender = pathname == routesConfig.search
 
     if (!isValidRerender) return
-    const id_ = searchParams.get("id") || ""
+    const id_ = searchParams.get("q") || ""
     if (!id_) {
       setLoading(false)
       setSearchRs({})

@@ -11,5 +11,5 @@ export const createArtistHref = (artistId: string | number) => {
 }
 
 export const createSearchHref = (searchParram: string | number) => {
-  return `/search?id=${searchParram}`
+  return `/search?q=${searchParram}`
 }

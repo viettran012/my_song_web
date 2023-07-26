@@ -3,10 +3,12 @@ import { RootState, AppThunk } from "../../app/store"
 
 export interface IUiState {
   sidebarExpand: boolean
+  isLoginModalShow: boolean
 }
 
 const initialState: IUiState = {
   sidebarExpand: true,
+  isLoginModalShow: false,
 }
 
 export const loadingSlice = createSlice({
@@ -16,9 +18,12 @@ export const loadingSlice = createSlice({
     toggleSidebar: (state, actions: { payload: boolean }) => {
       state.sidebarExpand = actions.payload
     },
+    setLoginModalShow: (state, actions: { payload: boolean }) => {
+      state.isLoginModalShow = actions.payload
+    },
   },
 })
 
-export const { toggleSidebar } = loadingSlice.actions
+export const { toggleSidebar, setLoginModalShow } = loadingSlice.actions
 
 export default loadingSlice.reducer

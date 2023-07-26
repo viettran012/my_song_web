@@ -6,6 +6,11 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { toggleSidebar } from "../../../features/ui/uiSlice"
 import { IPath } from "../../../types/item"
 import { useCallback, useEffect, useState } from "react"
+import { Button } from "../../../components/Button"
+import { GoogleLogin } from "@react-oauth/google"
+import { loginMethod } from "../../../_helper"
+import { ui } from "../../../utils/ui"
+import PlaylistSb from "../../../components/PlaylistSb"
 
 interface IProps {}
 
@@ -17,6 +22,8 @@ const Sidebar: React.FC<IProps> = ({}) => {
 
   const isExpand = useAppSelector((state) => state?.ui?.sidebarExpand)
   const isPlayerShow = useAppSelector((state) => state?.player?.isShoaInfo)
+
+  const isLogin = useAppSelector((state) => state?.user?.isLogin)
 
   const handleOnScroll = useCallback(() => {
     setIsTop(!document.documentElement.scrollTop)
@@ -35,7 +42,7 @@ const Sidebar: React.FC<IProps> = ({}) => {
           : "w-sidebar-width-narrow"
       } ${isPlayerShow || !isTop ? "bg-main-bg  border-r" : ""}`}
     >
-      <div className="mt-2">
+      <div className="mt-2 pb-8">
         {HEADER_ITEM?.map((item, index) => {
           const Icon =
             path?.pathname == item?.href
@@ -43,7 +50,7 @@ const Sidebar: React.FC<IProps> = ({}) => {
               : item.icon || GoHomeFill
 
           return (
-            <div className={`mb-1 key={index}`} key={index}>
+            <div className={`mb-1`} key={index}>
               <NavLink
                 to={item.href}
                 className={({ isActive }) =>
@@ -51,7 +58,7 @@ const Sidebar: React.FC<IProps> = ({}) => {
                 }
               >
                 <div
-                  className={`rounded-md flex justify-between items-center group-[]:bg-white-opacity-17 hover:bg-white-opacity-30 ${
+                  className={`rounded flex justify-between items-center group-[]:bg-white-opacity-17 hover:bg-white-opacity-30 ${
                     isExpand ? "px-3 py-3 h-12" : "flex-col px-1 py-3 h-16"
                   }`}
                 >
@@ -70,6 +77,34 @@ const Sidebar: React.FC<IProps> = ({}) => {
             </div>
           )
         })}
+      </div>
+
+      <div
+        className={`pt-8 border-t border-neutral-800 ${
+          isExpand ? "" : "hidden"
+        }`}
+      >
+        {isLogin ? (
+          <div>
+            <PlaylistSb></PlaylistSb>
+          </div>
+        ) : (
+          <div className="px-4">
+            <div>
+              <Button
+                isAnimated={false}
+                isActiveBg={true}
+                onClick={ui.showLoginModal}
+              >
+                Đăng nhập
+              </Button>
+            </div>
+            <div className="py-3 text-xs text-whiteT1">
+              Đăng nhập để tạo và chia sẻ danh sách phát, nhận các đề xuất được
+              cá nhân hóa, v.v.
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

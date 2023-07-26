@@ -5,11 +5,13 @@ import { CiMenuBurger, CiSearch } from "react-icons/ci"
 import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { CirButton } from "../../../components/Button"
+import { Button, CirButton } from "../../../components/Button"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { VscMenu } from "react-icons/vsc"
 import { toggleSidebar } from "../../../features/ui/uiSlice"
 import Search from "../../../components/Search"
+import UserAvatar from "../../../components/UserAvatar"
+import { ui } from "../../../utils/ui"
 
 interface Props {}
 
@@ -19,6 +21,7 @@ const Header: React.FC<Props> = ({}) => {
 
   const isExpand = useAppSelector((state) => state?.ui?.sidebarExpand)
   const isShow = useAppSelector((state) => state?.player?.isShoaInfo)
+  const isLogin = useAppSelector((state) => state?.user?.isLogin)
 
   const [isTop, setIsTop] = useState<boolean>(true)
 
@@ -65,8 +68,24 @@ const Header: React.FC<Props> = ({}) => {
           isExpand ? "ml-sidebar-width-expand" : "ml-sidebar-width-narrow"
         }`}
       >
-        <div className="max-w-7xl w-full flex">
+        <div className="max-w-7xl w-full flex items-center justify-between">
           <Search />
+          {isLogin ? (
+            <div>
+              <UserAvatar />
+            </div>
+          ) : (
+            <div>
+              <Button
+                styles={{ height: "44px" }}
+                isAnimated={false}
+                isActiveBg={true}
+                onClick={ui.showLoginModal}
+              >
+                Đăng nhập
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </FlexTag>

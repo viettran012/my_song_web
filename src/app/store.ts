@@ -3,6 +3,7 @@ import loadingReducer from "../features/loading/loadingSlice"
 import playerReducer from "../features/player/playerSlice"
 import routesReducer from "../features/routes/routesSlice"
 import uiReducer from "../features/ui/uiSlice"
+import userReducer from "../features/user/userSlice"
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     player: playerReducer,
     routes: routesReducer,
     ui: uiReducer,
+    user: userReducer,
   },
 })
 

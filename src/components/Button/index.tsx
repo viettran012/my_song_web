@@ -56,9 +56,11 @@ interface Button {
   isTransparent?: boolean
   isStopPropagation?: boolean
   isRadius?: boolean
+  isAnimated?: boolean
+  isActiveBg?: boolean
 }
 
-export const Button: React.FC<ICirButton> = ({
+export const Button: React.FC<Button> = ({
   children,
   radius = "40px",
   styles,
@@ -67,6 +69,8 @@ export const Button: React.FC<ICirButton> = ({
   isTransparent = false,
   isStopPropagation = true,
   isRadius = false,
+  isAnimated = true,
+  isActiveBg = false,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     isStopPropagation && e.stopPropagation()
@@ -76,11 +80,13 @@ export const Button: React.FC<ICirButton> = ({
   return (
     <div
       onClick={handleClick}
-      className={`cursor-pointer transition-all px-3 py-1 ${
-        isRadius ? "rounded-full" : "rounded-sm"
-      } flex justify-center items-center border active:scale-90 ${
-        !isTransparent ? "border-bdm" : "border-transparent"
-      } hover:bg-whv`}
+      className={`cursor-pointer transition-all px-3 py-2 hover:bg-whv ${
+        isRadius ? "rounded-full" : "rounded"
+      } flex justify-center items-center border ${
+        isAnimated ? "active:scale-90" : ""
+      } ${!isTransparent ? "border-bdm" : "border-transparent"} ${
+        isActiveBg ? "active:bg-whv1" : ""
+      } `}
       style={{
         pointerEvents: disabled ? "none" : "auto",
         opacity: disabled ? 0.3 : 1,

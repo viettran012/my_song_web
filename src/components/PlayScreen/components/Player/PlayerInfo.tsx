@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../../../app/hooks"
 import { SONG_ACTION } from "../../../../items/ACTION_ITEM"
-import { ISongInfo } from "../../../../types/item"
+import { ISong, ISongInfo } from "../../../../types/item"
+import { SongAction } from "../../../Action/SongAction"
 import { CirButton } from "../../../Button"
 import { SongPlayerThumbVariant } from "../../../Variants"
 import { DurationSongSlider } from "./parts/DurationSong"
@@ -24,7 +25,7 @@ const PlayerInfo: React.FC<IProps> = ({ info, isLoading }) => {
         <div className="text-whiteT1 font-semibold">{info?.artistsNames}</div>
       </div>
       <div className="ml-3 flex mr-3 text-white">
-        {SONG_ACTION.map((item, index) => {
+        {/* {SONG_ACTION.map((item, index) => {
           const Icon = item?.icon
           return (
             <div key={index} className="mr-1">
@@ -33,7 +34,8 @@ const PlayerInfo: React.FC<IProps> = ({ info, isLoading }) => {
               </CirButton>
             </div>
           )
-        })}
+        })} */}
+        <SongAction isHoverShow={false} song={info} />
       </div>
     </div>
   )

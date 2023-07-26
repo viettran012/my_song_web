@@ -30,6 +30,7 @@ module.exports = {
         whiteT1: "#ffffffB3",
         bdm: "#ffffff33",
         whv: "#ffffff1a",
+        whv1: "#ffffff2a",
         grayL: "#212121",
       },
       backgroundImage: {

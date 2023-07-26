@@ -45,6 +45,9 @@
   --animate-duration: 0.3s;
   --animate-delay: 0.5s;
   --whiteT1: #ffffffb3;
+  --grayL: #212121;
+  --heart-color: #ff6879;
+  /* --heart-color: #f60000; */
 }
 .thumbnail-player-main {
   animation-delay: 0.3s;

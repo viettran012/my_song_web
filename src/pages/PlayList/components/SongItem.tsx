@@ -20,6 +20,7 @@ import { useAppSelector } from "../../../app/hooks"
 import { IoMdPause } from "react-icons/io"
 import Loader from "../../../components/Loader"
 import store from "../../../app/store"
+import { SongAction } from "../../../components/Action/SongAction"
 
 interface IProps {
   song: ISong
@@ -111,17 +112,8 @@ const SongItem: React.FC<IProps> = ({
           <Artists artists={song?.artists} />
         </div>
         <div className="text-whiteT1 flex items-center">
-          <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
-            {SONG_ACTION.map((item, index) => {
-              const Icon = item?.icon
-              return (
-                <div key={index} className="mr-1">
-                  <CirButton isTransparent={true}>
-                    <Icon className="text-2xl" />
-                  </CirButton>
-                </div>
-              )
-            })}
+          <div className="flex mr-3 text-white">
+            <SongAction song={song} />
           </div>
           <div className="text-sm">
             {getTime.caculateTimeFM(song?.duration)}
@@ -202,17 +194,8 @@ export const SongItemCard: React.FC<ISongItemCard> = memo(
         </div>
         <div className="flex justify-between">
           <div className="text-whiteT1 flex items-center">
-            <div className="opacity-0 group-hover:opacity-100 flex text-white">
-              {SONG_ACTION.map((item, index) => {
-                const Icon = item?.icon
-                return (
-                  <div key={index} className="mr-1">
-                    <CirButton isTransparent={true}>
-                      <Icon className="text-2xl" />
-                    </CirButton>
-                  </div>
-                )
-              })}
+            <div className="flex text-white">
+              <SongAction song={song} />
             </div>
             <div className="text-sm group-hover:hidden">
               {getTime.caculateTimeFM(song?.duration)}
@@ -281,17 +264,8 @@ export const SongItemRelated: React.FC<IPropsSongRelated> = ({
       </div>
       <div className="flex justify-between">
         <div className="text-whiteT1 flex items-center">
-          <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
-            {SONG_ACTION.map((item, index) => {
-              const Icon = item?.icon
-              return (
-                <div key={index} className="mr-1">
-                  <CirButton isTransparent={true}>
-                    <Icon className="text-2xl" />
-                  </CirButton>
-                </div>
-              )
-            })}
+          <div className="flex mr-3 text-white">
+            <SongAction song={song} />
           </div>
           {/* <div className="text-sm">
             {getTime.caculateTimeFM(song?.duration)}
@@ -345,17 +319,8 @@ export const SongLinkItem: React.FC<IPropsSongLinkItem> = ({
         </div>
         <div className="flex justify-between">
           <div className="text-whiteT1 flex items-center">
-            <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
-              {SONG_ACTION.map((item, index) => {
-                const Icon = item?.icon
-                return (
-                  <div key={index} className="mr-1">
-                    <CirButton isTransparent={true}>
-                      <Icon className="text-2xl" />
-                    </CirButton>
-                  </div>
-                )
-              })}
+            <div className="flex mr-3 text-white">
+              {/* <SongAction song={song} /> */}
             </div>
             {isShowDuration && (
               <div className="text-sm">
@@ -410,17 +375,8 @@ export const PlaylistLinkItem: React.FC<IPropsPlaylistLinkItem> = ({
         </div>
         <div className="flex justify-between">
           <div className="text-whiteT1 flex items-center">
-            <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
-              {SONG_ACTION.map((item, index) => {
-                const Icon = item?.icon
-                return (
-                  <div key={index} className="mr-1">
-                    <CirButton isTransparent={true}>
-                      <Icon className="text-2xl" />
-                    </CirButton>
-                  </div>
-                )
-              })}
+            <div className="flex mr-3 text-white">
+              {/* <SongAction song={song} /> */}
             </div>
             {/* <div className="text-sm">
             {getTime.caculateTimeFM(song?.duration)}
@@ -466,17 +422,8 @@ export const ArtistLinkItem: React.FC<IPropsArtistLinkItem> = ({ artist }) => {
         </div>
         <div className="flex justify-between">
           <div className="text-whiteT1 flex items-center">
-            <div className="opacity-0 group-hover:opacity-100 flex mr-3 text-white">
-              {SONG_ACTION.map((item, index) => {
-                const Icon = item?.icon
-                return (
-                  <div key={index} className="mr-1">
-                    <CirButton isTransparent={true}>
-                      <Icon className="text-2xl" />
-                    </CirButton>
-                  </div>
-                )
-              })}
+            <div className="flex mr-3 text-white">
+              {/* <SongAction song={song} /> */}
             </div>
             {/* <div className="text-sm">
             {getTime.caculateTimeFM(song?.duration)}

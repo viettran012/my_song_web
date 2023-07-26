@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react"
+import { Fragment, useCallback, useEffect, useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { publicRoutes } from "./routes"
 import useHistory from "./hooks/useHistory"
@@ -10,12 +10,22 @@ import "animate.css"
 import { PlayScreen } from "./components/PlayScreen"
 import toast, { Toaster } from "react-hot-toast"
 import MiniLays from "./components/PlayScreen/components/MiniLays"
+import initDataUser from "./utils/initData"
+import { useGoogleOneTapLogin } from "@react-oauth/google"
+import { handleLoginSuccessGG } from "./utils/login"
+import getToken from "./utils/getToken"
+import OneTabLogin from "./components/OneTapLogin"
 
 function App() {
   const currentPath = useAppSelector((state) => state.routes?.pay?.currentPath)
 
+  useEffect(() => {
+    initDataUser()
+  }, [])
+
   return (
     <>
+      {!getToken() && <OneTabLogin />}
       <Router>
         <div className="App">
           <Routes>
@@ -40,7 +50,6 @@ function App() {
                   element={
                     <Layout>
                       <Page />
-                      {/* <PlayScreen /> */}
                       <MiniLays />
                     </Layout>
                   }

@@ -3,6 +3,12 @@ export interface IBanner {
   type: number
 }
 
+export interface IUserData {
+  name?: string
+  email?: string
+  picture?: string
+}
+
 export interface IArtists {
   id: string
   name: string
@@ -68,6 +74,17 @@ export interface ISong {
   artists: IArtists[]
   duration: number
   encodeId: string
+  artistsNames?: string
+}
+
+export interface ISongInfo {
+  artists?: IArtists[]
+  artist?: IArtists
+  artistsNames?: string
+  duration?: number
+  thumbnailM?: string
+  title?: string
+  encodeId?: string
 }
 
 export interface ISongList {
@@ -81,15 +98,6 @@ export interface IPath {
   key?: string
   pathname?: string
   search?: string
-}
-
-export interface ISongInfo {
-  artists?: IArtists[]
-  artist?: IArtists
-  artistsNames?: string
-  duration?: number
-  thumbnailM?: string
-  title?: string
 }
 
 export interface ISongMP3 {

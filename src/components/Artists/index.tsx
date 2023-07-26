@@ -28,13 +28,19 @@ const Artists: React.FC<IProps> = ({ artists }) => {
     <div>
       {artists?.map((item, index) =>
         index < 3 ? (
-          <Link
-            key={index}
-            to={createArtistHref(item?.alias)}
-            className="hover:underline"
-          >
-            {`${item?.name}${index == artists?.length - 1 ? "" : ","} `}
-          </Link>
+          item?.alias ? (
+            <Link
+              key={index}
+              to={createArtistHref(item?.alias)}
+              className="hover:underline"
+            >
+              {`${item?.name}${index == artists?.length - 1 ? "" : ","} `}
+            </Link>
+          ) : (
+            <span key={index}>
+              {`${item?.name}${index == artists?.length - 1 ? "" : ","} `}
+            </span>
+          )
         ) : (
           ""
         ),

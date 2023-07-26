@@ -57,7 +57,11 @@ const ArtistsPage: React.FC<IProps> = ({}) => {
             .catch((error) => {
               setLoading(false)
             })
-        } else setData({})
+        } else {
+          setLoading(false)
+
+          setData({})
+        }
       })
       .catch((error) => {
         setLoading(false)

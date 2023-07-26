@@ -76,8 +76,8 @@ const Search: React.FC = () => {
   return (
     <div className="relative">
       {isInputFocus ? (
-        <div className="absolute overflow-auto scrollbar-noboder top-11 min-h-[40px] max-h-[70vh] bg-main-bg w-full border border-white-opacity-25 border-t-0 rounded-br-md rounded-bl-md">
-          <div className="pb-5">
+        <div className="absolute overflow-auto scrollbar-noboder top-11 min-h-[40px] max-h-[70vh] bg-main-bg w-full border border-white-opacity-25 border-t-0 rounded-br rounded-bl">
+          <div className="">
             <div>{debouncedValue && <SearchItem title={debouncedValue} />}</div>
             {searchRs?.artists?.length && searchRs?.artists[0]?.alias ? (
               <div>
@@ -114,7 +114,7 @@ const Search: React.FC = () => {
         </div>
       ) : null}
       <div
-        className={`flex h-11 overflow-hidden rounded-md border border-white-opacity-25 relative ${
+        className={`flex h-11 overflow-hidden rounded border border-white-opacity-25 relative ${
           isInputFocus
             ? "bg-main-bg rounded-bl-none rounded-br-none"
             : "bg-white-opacity-20"

@@ -1,47 +1,56 @@
-import { get, post } from "../utils/request";
-import storage from "../utils/storage";
-import API from "./API";
+import { get, post } from "../utils/request"
+import storage from "../utils/storage"
+import API from "./API"
+import getHeaderToken from "../utils/getHeaderToken"
 
 async function likeSong(body: object) {
-  const API_ = API.LIKE_SONG;
-
-  const userInfo = await storage.getItem("userInfo");
-  const userId = userInfo?.user?.uid;
-
-  return post(API_, { ...body, userId }).then((data) => {
-    return data;
-  });
+  const API_ = API.LIKE_SONG
+  return post(
+    API_,
+    { ...body },
+    {
+      headers: {
+        ...getHeaderToken(),
+      },
+    },
+  ).then((data) => {
+    return data
+  })
 }
 
 async function addToPlaylist(body: object) {
-  const API_ = API.ADD_TO_PLAYLIST;
+  const API_ = API.ADD_TO_PLAYLIST
 
-  const userInfo = await storage.getItem("userInfo");
-  const userId = userInfo?.user?.uid;
+  const userInfo = await storage.getItem("userInfo")
+  const userId = userInfo?.user?.uid
 
   return post(API_, { ...body, userId }).then((data) => {
-    return data;
-  });
+    return data
+  })
 }
 
 async function removeToPlaylist(body: object) {
-  const API_ = API.REMOVE_TO_PLAYLIST;
+  const API_ = API.REMOVE_TO_PLAYLIST
 
-  const userInfo = await storage.getItem("userInfo");
-  const userId = userInfo?.user?.uid;
+  const userInfo = await storage.getItem("userInfo")
+  const userId = userInfo?.user?.uid
 
   return post(API_, { ...body, userId }).then((data) => {
-    return data;
-  });
+    return data
+  })
 }
 
-async function initData(body: object) {
-  const userInfo = await storage.getItem("userInfo");
-  const userId = userInfo?.user?.uid;
-  const API_ = API.INIT_DATA + `?userId=${userId}`;
+async function initData() {
+  const API_ = API.INIT_DATA
 
-  const data = await get(API_);
-  return data;
+  const data = await get(
+    API_,
+    {},
+    {
+      ...getHeaderToken(),
+    },
+  )
+  return data
 }
 
-export { likeSong, initData, addToPlaylist, removeToPlaylist };
+export { likeSong, initData, addToPlaylist, removeToPlaylist }
