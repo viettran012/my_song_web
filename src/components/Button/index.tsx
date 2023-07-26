@@ -9,6 +9,7 @@ interface ICirButton {
   isTransparent?: boolean
   isStopPropagation?: boolean
   isRadius?: boolean
+  className?: string
 }
 
 export const CirButton: React.FC<ICirButton> = ({
@@ -20,6 +21,7 @@ export const CirButton: React.FC<ICirButton> = ({
   isTransparent = false,
   isStopPropagation = true,
   isRadius = true,
+  className = "",
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     isStopPropagation && e.stopPropagation()
@@ -29,7 +31,7 @@ export const CirButton: React.FC<ICirButton> = ({
   return (
     <div
       onClick={handleClick}
-      className={`cursor-pointer transition-all ${
+      className={`${className} cursor-pointer transition-all ${
         isRadius ? "rounded-full" : "rounded-sm"
       } flex justify-center items-center border active:scale-90 ${
         !isTransparent ? "border-bdm" : "border-transparent"

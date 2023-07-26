@@ -21,14 +21,15 @@ export const SongAction: React.FC<IProps> = ({ song, isHoverShow = true }) => {
   }, [fvList])
 
   return SONG_ACTION.map((item, index) => {
-    const isHeartLike = isLike && item.id == "heart"
+    const isHeart = item.id == "heart"
+    const isHeartLike = isLike && isHeart
 
     const Icon = isHeartLike ? item?.activeIcon : item?.icon
     const color = isHeartLike ? "var(--heart-color)" : "#ffffff"
     const callback = item?.callback
     const cb = () => {
       callback({ song, isLike })
-      item.id == "heart" && setIsLike(!isLike)
+      isHeart && setIsLike(!isLike)
     }
     return (
       <div
@@ -43,7 +44,18 @@ export const SongAction: React.FC<IProps> = ({ song, isHoverShow = true }) => {
             item?.isLoginedAction ? loginCallback(cb) : cb()
           }}
         >
-          <Icon className="text-2xl" color={color} />
+          {isHeart ? (
+            <>
+              {!isHeartLike && <Icon className="text-2xl" color={color} />}
+              <div
+                className={`${
+                  !isHeartLike ? "opacity-0" : ""
+                } heart-btn-action ${isHeartLike ? "is-active" : ""}`}
+              ></div>
+            </>
+          ) : (
+            <Icon className="text-2xl" color={color} />
+          )}
         </CirButton>
       </div>
     )
