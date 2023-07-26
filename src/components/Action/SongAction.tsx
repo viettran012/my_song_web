@@ -12,6 +12,7 @@ interface IProps {
 
 export const SongAction: React.FC<IProps> = ({ song, isHoverShow = true }) => {
   const fvList = useAppSelector((state) => state?.user?.favoriteListID)
+  const [useAnimate, setUseAnimate] = useState(false)
   const [isLike, setIsLike] = useState(
     fvList?.includes(song?.encodeId || "000"),
   )
@@ -23,11 +24,12 @@ export const SongAction: React.FC<IProps> = ({ song, isHoverShow = true }) => {
   return SONG_ACTION.map((item, index) => {
     const isHeart = item.id == "heart"
     const isHeartLike = isLike && isHeart
-
+    const random = Math?.random()
     const Icon = isHeartLike ? item?.activeIcon : item?.icon
     const color = isHeartLike ? "var(--heart-color)" : "#ffffff"
     const callback = item?.callback
     const cb = () => {
+      setUseAnimate(true)
       callback({ song, isLike })
       isHeart && setIsLike(!isLike)
     }
@@ -45,14 +47,15 @@ export const SongAction: React.FC<IProps> = ({ song, isHoverShow = true }) => {
           }}
         >
           {isHeart ? (
-            <>
-              {!isHeartLike && <Icon className="text-2xl" color={color} />}
-              <div
-                className={`${
-                  !isHeartLike ? "opacity-0" : ""
-                } heart-btn-action ${isHeartLike ? "is-active" : ""}`}
-              ></div>
-            </>
+            <div
+              className={`toggle-heart ${
+                isHeartLike
+                  ? `${useAnimate ? "is-liked" : "is-liked-not-animate"}`
+                  : ""
+              }`}
+            >
+              <Icon color={color} />
+            </div>
           ) : (
             <Icon className="text-2xl" color={color} />
           )}
