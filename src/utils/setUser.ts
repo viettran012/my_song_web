@@ -2,8 +2,11 @@ import store from "../app/store"
 import {
   setFavoriteListID,
   setIsLogin,
+  setPlayListUser,
   setUserData,
 } from "../features/user/userSlice"
+import { IPlayList } from "../types/item"
+import getTime from "./getTime"
 import storage from "./storage"
 
 interface ISetUSer {
@@ -12,9 +15,17 @@ interface ISetUSer {
   email: string
   picture?: string
   token?: string
+  time?: number
 }
 
-export const setUser = ({ isLogin, name, email, picture, token }: ISetUSer) => {
+export const setUser = ({
+  isLogin,
+  name,
+  email,
+  picture,
+  token,
+  time,
+}: ISetUSer) => {
   store.dispatch(setIsLogin(true))
 
   token && storage?.setItem("token", token)
@@ -24,6 +35,7 @@ export const setUser = ({ isLogin, name, email, picture, token }: ISetUSer) => {
       name,
       email,
       picture,
+      time: getTime?.currUnix(),
     }),
   )
 }
@@ -52,5 +64,11 @@ export const removeFvPlaylist = (encodeId: string) => {
 export const setUserFavoriteListID = (list: string[]) => {
   if (typeof list == "object" && list?.length) {
     store.dispatch(setFavoriteListID(list))
+  }
+}
+
+export const setPlayListfUser = (list: IPlayList[]) => {
+  if (typeof list == "object" && list?.length) {
+    store.dispatch(setPlayListUser(list))
   }
 }

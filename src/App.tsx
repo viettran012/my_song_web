@@ -15,6 +15,7 @@ import { useGoogleOneTapLogin } from "@react-oauth/google"
 import { handleLoginSuccessGG } from "./utils/login"
 import getToken from "./utils/getToken"
 import OneTabLogin from "./components/OneTapLogin"
+import { toastConfig } from "./components/Toast/toastConfig"
 
 function App() {
   const currentPath = useAppSelector((state) => state.routes?.pay?.currentPath)
@@ -59,7 +60,14 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={toastConfig}
+        containerStyle={{
+          top: 68,
+        }}
+      ></Toaster>
     </>
   )
 }

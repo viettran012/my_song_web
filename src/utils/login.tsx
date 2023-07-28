@@ -15,13 +15,9 @@ export const handleLoginSuccessGG = (codeResponse: any) => {
     if (fb?.result == 1) {
       setUser({ isLogin: true, ...data })
       initDataUser()
-      toast.custom((t) => <InfoToast t={t} infoText="Đăng nhập thành công" />, {
-        duration: 3000,
-      })
+      toast.success("Đăng nhập thành công")
     } else {
-      toast.custom((t) => <InfoToast t={t} infoText="Đăng nhập thất bại" />, {
-        duration: 3000,
-      })
+      toast("Đăng nhập thất bại")
     }
     ui.hiddenLoginModal()
   })

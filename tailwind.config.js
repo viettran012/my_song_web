@@ -32,6 +32,7 @@ module.exports = {
         whv: "#ffffff1a",
         whv1: "#ffffff2a",
         grayL: "#212121",
+        grayL2: "#353535",
       },
       backgroundImage: {
         "body-bg": "url('assets/bg/body-bg.jpg')",
@@ -42,6 +43,7 @@ module.exports = {
       },
       transitionProperty: {
         top: "top",
+        border: "border",
       },
       keyframes: {
         fadeIn: {

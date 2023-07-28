@@ -7,6 +7,7 @@ export interface IUserData {
   name?: string
   email?: string
   picture?: string
+  time?: number
 }
 
 export interface IArtists {
@@ -59,6 +60,7 @@ export interface IPlayList {
   sortDescription?: string
   sectionType?: string
   encodeId?: string
+  per?: number
 }
 
 export interface IPlayListItem {

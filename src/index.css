@@ -8,8 +8,24 @@
   width: 12px;
 }
 
+::-webkit-scrollbar-thumb {
+  background: var(--gray-main);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-main-700);
+}
 ::-webkit-scrollbar-track {
   border-left: 1px var(--border-main) solid;
+  border-radius: 0px;
+}
+
+.scrollbar-small::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-small::-webkit-scrollbar-track {
+  border-left: 1px var(--border-main) transparent;
   border-radius: 0px;
 }
 
@@ -23,15 +39,6 @@
   border-radius: 0px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--gray-main);
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--gray-main-700);
-}
-
 :root {
   --main-bg: #030303;
   --color-white: #ffffff;
@@ -40,12 +47,15 @@
   --blue: #5865fc;
   --blueL: #3c92ff;
   --border-main: #262626;
+  --border-mainL: #4f4f4f;
+  --border-mainL1: #464646;
   --gray-main: #606060;
   --gray-main-700: #505050;
   --animate-duration: 0.3s;
   --animate-delay: 0.5s;
   --whiteT1: #ffffffb3;
   --grayL: #212121;
+  --grayL2: #353535;
   --heart-color: #ff6879;
   /* --heart-color: #f60000; */
 }
@@ -60,7 +70,7 @@ body {
   /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif; */
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Nunito Sans", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--main-bg);
@@ -103,27 +113,40 @@ code {
   .control-thumb-style-h {
     @apply absolute h-0 w-0 overflow-hidden flex bg-[#0000003f] justify-center items-center rounded-full;
   }
+
+  .mini-overflow-scrollbar {
+    @apply overflow-auto pr-1;
+  }
+}
+
+/* //popup override  */
+.popup-content {
+  margin: auto;
+  background: var(--grayL);
+  width: 50%;
+  padding: 5px;
+  border-radius: 2px;
+  border: 1px solid var(--border-mainL1);
+}
+.popup-arrow {
+  color: var(--grayL);
+}
+[role="tooltip"].popup-content {
+  width: auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+  border-radius: 2px;
+  padding: 16px 0;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup="tooltip"].popup-overlay {
+  background: transparent;
 }
 
 /* // heart animate css  */
 
-/* .heart-btn-action {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  background: url("/images/heart.png") no-repeat;
-  background-position: 0px 0px;
-  cursor: pointer;
-  transition: background-position 1s steps(28);
-  transition-duration: 0s;
-  pointer-events: none;
-  transform: scale(0.7);
-}
-
-.heart-btn-action.is-active {
-  transition-duration: 1s;
-  background-position: -2800px 0px;
-} */
 .toggle-heart.is-liked-not-animate {
   color: #e2264d;
   will-change: font-size;

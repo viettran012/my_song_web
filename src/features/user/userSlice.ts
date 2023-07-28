@@ -1,18 +1,25 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState, AppThunk } from "../../app/store"
-import { IPlayListArr, IPlayListItem, IUserData } from "../../types/item"
+import {
+  IPlayList,
+  IPlayListArr,
+  IPlayListItem,
+  IUserData,
+} from "../../types/item"
 import getToken from "../../utils/getToken"
+import getTime from "../../utils/getTime"
 
 export interface IUserState {
   isLogin: boolean
   data?: IUserData
-  playList?: IPlayListItem[]
+  playList?: IPlayList[]
   favoriteListID?: string[]
 }
 
 const initialState: IUserState = {
   isLogin: !!getToken(),
   favoriteListID: [],
+  playList: [],
 }
 
 export const userSlice = createSlice({
@@ -28,9 +35,13 @@ export const userSlice = createSlice({
     setFavoriteListID: (state, actions: { payload: string[] }) => {
       state.favoriteListID = actions.payload
     },
+    setPlayListUser: (state, actions: { payload: IPlayList[] }) => {
+      state.playList = actions.payload
+    },
   },
 })
 
-export const { setIsLogin, setUserData, setFavoriteListID } = userSlice.actions
+export const { setIsLogin, setUserData, setFavoriteListID, setPlayListUser } =
+  userSlice.actions
 
 export default userSlice.reducer

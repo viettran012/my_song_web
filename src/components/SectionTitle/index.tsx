@@ -18,12 +18,14 @@ export const SectionTitle2xl: React.FC<IProps> = ({
   fontSize = "3xl",
 }) => {
   return (
-    <div className={`text-2xl text-${fontSize} font-extrabold`}>{title}</div>
+    <div className={`text-2xl text-${fontSize} font-extrabold text-white`}>
+      {title}
+    </div>
   )
 }
 
 export const SectionTitleXl: React.FC<IProps> = ({ title }) => {
-  return <div className={`text-xl  font-extrabold`}>{title}</div>
+  return <div className={`text-xl  font-extrabold text-white`}>{title}</div>
 }
 
 export default SectionTitle

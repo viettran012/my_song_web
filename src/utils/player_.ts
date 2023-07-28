@@ -12,6 +12,7 @@ import handleData from "./handleData"
 import { setSong } from "./playSong"
 import { history } from "../_helper"
 import { createPlayerHref } from "./createHref"
+import { constant } from "../constant"
 
 export const player_ = {
   toggle: function () {
@@ -26,8 +27,8 @@ export const player_ = {
     document.title = store?.getState()?.player?.status?.isPlaying
       ? song?.title
         ? `${song?.title} - ${song?.artistsNames}`
-        : "Solfive"
-      : "Solfive"
+        : constant.appName
+      : constant.appName
   },
   toggleRepeat: function () {
     store?.dispatch(setIsRepeat(!store?.getState()?.player?.status?.isRepeat))

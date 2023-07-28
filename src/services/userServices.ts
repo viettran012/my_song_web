@@ -21,21 +21,30 @@ async function likeSong(body: object) {
 async function addToPlaylist(body: object) {
   const API_ = API.ADD_TO_PLAYLIST
 
-  const userInfo = await storage.getItem("userInfo")
-  const userId = userInfo?.user?.uid
-
-  return post(API_, { ...body, userId }).then((data) => {
+  return post(
+    API_,
+    { ...body },
+    {
+      headers: {
+        ...getHeaderToken(),
+      },
+    },
+  ).then((data) => {
     return data
   })
 }
 
 async function removeToPlaylist(body: object) {
   const API_ = API.REMOVE_TO_PLAYLIST
-
-  const userInfo = await storage.getItem("userInfo")
-  const userId = userInfo?.user?.uid
-
-  return post(API_, { ...body, userId }).then((data) => {
+  return post(
+    API_,
+    { ...body },
+    {
+      headers: {
+        ...getHeaderToken(),
+      },
+    },
+  ).then((data) => {
     return data
   })
 }

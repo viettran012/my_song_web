@@ -1,5 +1,5 @@
-const DOMAIN = "https://apisolfive.app.tranviet.site"
-// const DOMAIN = "http://localhost:5000"
+// const DOMAIN = "https://apisolfive.app.tranviet.site"
+const DOMAIN = "http://localhost:5000"
 
 const API = {
   GET_DISCOVER_API: DOMAIN + "/v2/api/get/home",

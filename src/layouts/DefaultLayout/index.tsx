@@ -7,6 +7,7 @@ import { useAppSelector } from "../../app/hooks"
 import Sidebar from "./components/Sidebar"
 import MaskColor from "./components/MaskColor"
 import { LoginModal } from "../../components/Modal/LoginModal"
+import PlayListSelectModal from "../../components/Modal/PlayListSelectModal"
 
 interface IProps {
   children: ReactNode
@@ -32,6 +33,7 @@ const DefaultLayout: React.FC<IProps> = ({ children }) => {
         <Sidebar />
         <LoginModal />
         <PlayScreen />
+        <PlayListSelectModal />
         <div
           className={`pt-20 px-24 relative z-10 flex flex-col items-center ${
             isSidebarExpand

@@ -21,6 +21,7 @@ import { IoMdPause } from "react-icons/io"
 import Loader from "../../../components/Loader"
 import store from "../../../app/store"
 import { SongAction } from "../../../components/Action/SongAction"
+import { useState } from "react"
 
 interface IProps {
   song: ISong
@@ -69,6 +70,8 @@ const SongItem: React.FC<IProps> = ({
   handlePlaySong = () => {},
   playListId,
 }) => {
+  const [ref, setRef] = useState<HTMLDivElement>()
+  const comRef = useRef<HTMLDivElement>(null)
   const href = createPlayerHref(song?.encodeId, playListId)
   const songId = useAppSelector((state) => state.player.songId)
   const isPlaying_ = useAppSelector((state) => state.player.status.isPlaying)
@@ -77,8 +80,15 @@ const SongItem: React.FC<IProps> = ({
   const isPlaying = songId == song?.encodeId && isPlaying_
   const isFocus = songId == song?.encodeId
 
+  useEffect(() => {
+    if (comRef?.current) {
+      setRef(comRef?.current)
+    }
+  }, [])
+
   return (
     <div
+      ref={comRef}
       className={`group border-b border-neutral-900 h-12 px-2 flex items-center ${
         isFocus ? "bg-grayL" : ""
       }`}
@@ -113,7 +123,7 @@ const SongItem: React.FC<IProps> = ({
         </div>
         <div className="text-whiteT1 flex items-center">
           <div className="flex mr-3 text-white">
-            <SongAction song={song} />
+            <SongAction comRef={ref} song={song} playListId={playListId} />
           </div>
           <div className="text-sm">
             {getTime.caculateTimeFM(song?.duration)}
@@ -133,6 +143,7 @@ interface ISongItemCard {
 
 export const SongItemCard: React.FC<ISongItemCard> = memo(
   ({ id, isFocus, isPlaying, handlePlaySong = () => {} }) => {
+    // console.log("render-song-item-card")
     const song = useAppSelector((state) =>
       state.player?.playList?.find((songItem) => songItem?.encodeId == id),
     )

@@ -36,11 +36,15 @@ const Sidebar: React.FC<IProps> = ({}) => {
 
   return (
     <div
-      className={`fixed z-20 pt-header px-2 overflow-auto bottom-0 top-0 left-0 border-neutral-800 ${
+      className={`transition-border flex flex-col fixed z-20 pt-header px-2 overflow-auto bottom-0 top-0 left-0 border-r border-neutral-800 ${
         isExpand
-          ? "w-sidebar-width-expand bg-main-bg  border-r"
+          ? "w-sidebar-width-expand bg-main-bg"
           : "w-sidebar-width-narrow"
-      } ${isPlayerShow || !isTop ? "bg-main-bg  border-r" : ""}`}
+      } ${isPlayerShow ? "bg-main-bg" : ""} ${
+        !isExpand && isTop && !isPlayerShow
+          ? "border-transparent"
+          : "bg-main-bg"
+      } `}
     >
       <div className="mt-2 pb-8">
         {HEADER_ITEM?.map((item, index) => {
@@ -80,14 +84,12 @@ const Sidebar: React.FC<IProps> = ({}) => {
       </div>
 
       <div
-        className={`pt-8 border-t border-neutral-800 ${
+        className={`overflow-auto pt-8 flex-1 flex flex-col border-t border-neutral-800 ${
           isExpand ? "" : "hidden"
         }`}
       >
         {isLogin ? (
-          <div>
-            <PlaylistSb></PlaylistSb>
-          </div>
+          <PlaylistSb></PlaylistSb>
         ) : (
           <div className="px-4">
             <div>

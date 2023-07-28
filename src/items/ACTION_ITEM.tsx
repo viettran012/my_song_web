@@ -1,11 +1,29 @@
 import { AiOutlineMore } from "react-icons/ai"
-import { PiHeartFill, PiHeartLight } from "react-icons/pi"
+import {
+  PiHeartFill,
+  PiHeartLight,
+  PiListPlus,
+  PiListPlusLight,
+  PiPlayCircleLight,
+  PiShareFatLight,
+  PiUserLight,
+} from "react-icons/pi"
 import { ISong, ISongInfo } from "../types/item"
-import { initData, likeSong } from "../services/userServices"
-import { loginCallback } from "../utils/ui"
+import {
+  addToPlaylist,
+  initData,
+  likeSong,
+  removeToPlaylist,
+} from "../services/userServices"
+import { loginCallback, ui } from "../utils/ui"
 import { pushFvPlaylist, removeFvPlaylist } from "../utils/setUser"
 import toast from "react-hot-toast"
 import { InfoToast } from "../components/Toast"
+import { BsPlayCircle } from "react-icons/bs"
+import { TbUserHeart } from "react-icons/tb"
+import { history } from "../_helper"
+import { createArtistHref, createPlayerHref } from "../utils/createHref"
+import initDataUser from "../utils/initData"
 
 interface ISongActionCallback {
   song: ISong | ISongInfo
@@ -25,17 +43,7 @@ export const SONG_ACTION = [
         removeFvPlaylist(song?.encodeId)
       } else {
         pushFvPlaylist(song?.encodeId)
-        toast.custom(
-          (t) => (
-            <InfoToast
-              t={t}
-              infoText={`Đã thêm '${song?.title}' vào danh sách yêu thích`}
-            />
-          ),
-          {
-            duration: 3000,
-          },
-        )
+        toast(`Đã thêm '${song?.title}' vào danh sách yêu thích`)
       }
 
       loginCallback(() =>
@@ -48,5 +56,125 @@ export const SONG_ACTION = [
     icon: AiOutlineMore,
     isActive: false,
     callback: function ({ song }: ISongActionCallback) {},
+  },
+]
+
+interface ISongOptionsCallback {
+  song: ISong | ISongInfo
+  isLike?: boolean
+  playlistId?: string
+  comRef?: HTMLDivElement | null
+}
+
+export const OPTIONS_SONG = [
+  {
+    id: "options",
+    icon: PiPlayCircleLight,
+    iconSize: 24,
+    title: "Bắt đầu phát",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+      const { navigate } = history
+      navigate && navigate(createPlayerHref(song?.encodeId))
+    },
+  },
+  {
+    id: "add-to-playlist",
+    icon: PiListPlusLight,
+    iconSize: 22,
+    isLoginedAction: true,
+    title: "Thêm vào danh sách phát",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+
+      ui.showPlaylistSelect({
+        title: "Lưu vào danh sách phát",
+        callback: (id) => {
+          if (!id) return
+          ui.hiddenPlaylistSelect()
+          addToPlaylist({ ...song, playlistId: id }).then((fb) => {
+            if (fb?.result == 1) {
+              toast("Đã thêm")
+              initDataUser()
+            } else {
+              toast("Thất bại")
+            }
+          })
+        },
+      })
+    },
+  },
+  {
+    id: "options",
+    icon: PiUserLight,
+    iconSize: 22,
+    title: "Chuyển đến trang nghệ sĩ",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.artists) return
+      const { navigate } = history
+      navigate && navigate(createArtistHref(song?.artists[0]?.alias))
+    },
+  },
+  {
+    id: "options",
+    icon: PiShareFatLight,
+    iconSize: 22,
+    title: "Chia sẻ",
+    callback: function ({ song }: ISongOptionsCallback) {},
+  },
+]
+
+export const OPTIONS_SONG_OWNER = [
+  {
+    id: "options",
+    icon: PiPlayCircleLight,
+    iconSize: 24,
+    title: "Bắt đầu phát",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+      const { navigate } = history
+      navigate && navigate(createPlayerHref(song?.encodeId))
+    },
+  },
+  {
+    id: "add-to-playlist",
+    icon: PiListPlusLight,
+    iconSize: 22,
+    isLoginedAction: true,
+    title: "Xoá khỏi danh sách phát",
+    callback: function ({ song, playlistId, comRef }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+
+      ui.hiddenPlaylistSelect()
+      removeToPlaylist({ ...song, playlistId: playlistId }).then((fb) => {
+        if (fb?.result == 1) {
+          toast("Đã xoá")
+          if (comRef) {
+            comRef.style.display = "none"
+          }
+          initDataUser()
+        } else {
+          toast("Thất bại")
+        }
+      })
+    },
+  },
+  {
+    id: "options",
+    icon: PiUserLight,
+    iconSize: 22,
+    title: "Chuyển đến trang nghệ sĩ",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.artists) return
+      const { navigate } = history
+      navigate && navigate(createArtistHref(song?.artists[0]?.alias))
+    },
+  },
+  {
+    id: "options",
+    icon: PiShareFatLight,
+    iconSize: 22,
+    title: "Chia sẻ",
+    callback: function ({ song }: ISongOptionsCallback) {},
   },
 ]

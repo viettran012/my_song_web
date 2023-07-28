@@ -2,6 +2,8 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import getPlayListInfoService from "../services/playListService"
 import { setPlayList, setPlayListInfo } from "../features/player/playerSlice"
+import { getSongInfoService } from "../services/getSongService"
+import { ISong } from "../types/item"
 
 const usePlaylistFw = () => {
   const dispatch = useAppDispatch()

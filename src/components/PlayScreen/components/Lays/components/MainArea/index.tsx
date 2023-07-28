@@ -20,7 +20,7 @@ const tabStyle: CSSProperties = {
   flex: 1,
   color: "#ffffffB3",
   fontSize: "14px",
-  fontWeight: 600,
+  fontWeight: 700,
 }
 
 function CustomTabPanel(props: TabPanelProps) {

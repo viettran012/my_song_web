@@ -70,10 +70,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
         setAudio({})
 
         setTimeout(() => {
-          toast.custom(
-            (t) => <InfoToast t={t} infoText="Không thể phát bài hát" />,
-            { duration: 3000 },
-          )
+          toast("Không thể phát bài hát")
           player_.next()
         }, 3000)
       }
