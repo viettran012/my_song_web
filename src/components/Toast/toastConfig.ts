@@ -15,6 +15,15 @@ export const toastConfig = {
       secondary: "var(--color-white)",
     },
   },
+  loading: {
+    style: {
+      ...styles,
+    },
+    iconTheme: {
+      primary: "var(--turquoise)",
+      secondary: "var(--color-white)",
+    },
+  },
   error: {
     duration: 3000,
     style: {

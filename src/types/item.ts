@@ -8,6 +8,7 @@ export interface IUserData {
   email?: string
   picture?: string
   time?: number
+  id?: number
 }
 
 export interface IArtists {
@@ -52,6 +53,7 @@ export interface ISearchRs {
 }
 
 export interface IPlayList {
+  userId?: number
   thumbnailM?: string
   thumbnail?: string
   title?: string
@@ -77,6 +79,7 @@ export interface ISong {
   duration: number
   encodeId: string
   artistsNames?: string
+  userId?: number
 }
 
 export interface ISongInfo {
@@ -87,6 +90,7 @@ export interface ISongInfo {
   thumbnailM?: string
   title?: string
   encodeId?: string
+  userId?: number
 }
 
 export interface ISongList {

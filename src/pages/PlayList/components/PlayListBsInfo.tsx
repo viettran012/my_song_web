@@ -4,6 +4,12 @@ import { PlayListVariants } from "./PlayListVariants"
 import getTime from "../../../utils/getTime"
 import SectionTitle from "../../../components/SectionTitle"
 import { PiPlaylistLight } from "react-icons/pi"
+import { PlayListAction } from "../../../components/Action/PlayListAction"
+import { Button } from "../../../components/Button"
+import { CiShuffle } from "react-icons/ci"
+import { useNavigate } from "react-router-dom"
+import { createPlayerHref } from "../../../utils/createHref"
+import { player_ } from "../../../utils/player_"
 
 interface IProps {
   data: IPlayList
@@ -11,6 +17,23 @@ interface IProps {
 
 const PlayListBsInfo: React.FC<IProps> = ({ data }) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const { encodeId } = data
+
+  const handleMixPlay = () => {
+    const songList = data?.song?.items
+    const sLength = songList?.length || 0
+    const random = Math.floor(Math.random() * (sLength - 1))
+    const songId = songList?.length
+      ? songList[random]?.encodeId || songList[0]?.encodeId
+      : ""
+    if (!encodeId || !songId) return
+    const href = createPlayerHref(songId, encodeId)
+    navigate(href)
+    player_?.play()
+  }
+
   return (
     <div className="flex">
       <div>
@@ -46,7 +69,7 @@ const PlayListBsInfo: React.FC<IProps> = ({ data }) => {
           </div>
         )}
       </div>
-      <div className="ml-9">
+      <div className="ml-9 flex flex-col justify-between">
         <div className="py-5">
           <SectionTitle title={data?.title || ""}></SectionTitle>
         </div>
@@ -63,6 +86,31 @@ const PlayListBsInfo: React.FC<IProps> = ({ data }) => {
             </div>
           </div>
           <div className="mt-3 text-sm">{data?.sortDescription}</div>
+        </div>
+        <div className="flex">
+          {data?.song?.items?.length ? (
+            <div className="mr-4">
+              <Button
+                onClick={handleMixPlay}
+                isAnimated={false}
+                isActiveBg={true}
+                styles={{
+                  borderRadius: 9999,
+                  backgroundColor: "var(--color-white)",
+                  color: "var(--black)",
+                  fontWeight: 700,
+                  fontSize: "14px",
+                }}
+              >
+                <CiShuffle size={25} color={"var(--black)"} />
+                <div className="ml-2">Phát ngẫu nhiên</div>
+              </Button>
+            </div>
+          ) : null}
+
+          <div>
+            <PlayListAction isHoverShow={false} playList={data} />
+          </div>
         </div>
       </div>
     </div>

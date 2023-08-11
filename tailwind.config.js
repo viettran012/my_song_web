@@ -31,11 +31,12 @@ module.exports = {
         bdm: "#ffffff33",
         whv: "#ffffff1a",
         whv1: "#ffffff2a",
+        whv1nop: "#444444",
         grayL: "#212121",
         grayL2: "#353535",
       },
       backgroundImage: {
-        "body-bg": "url('assets/bg/body-bg.jpg')",
+        "body-bg": "url('/static/assets/bg/body-bg.jpg')",
       },
       flex: {
         a2: "2",

@@ -24,76 +24,46 @@ import getSongService, {
 } from "../../services/getSongService"
 import getArtistInfoService from "../../services/artistService"
 import getPlayListInfoService from "../../services/playListService"
+import {
+  OPTIONS_PLAYLIST,
+  OPTIONS_PLAYLIST_OWNER,
+  PLAYLIST_ACTION,
+} from "../../items/PLAYLIST_ACTION"
 import { popoverPosition } from "../../constant"
-import { use } from "i18next"
 
 interface IProps {
-  song: ISong | ISongInfo
+  playList: IPlayList
   isHoverShow?: boolean
   playListId?: string
   comRef?: HTMLDivElement | null
 }
 
-export const SongAction: React.FC<IProps> = ({
-  song,
+export const PlayListAction: React.FC<IProps> = ({
+  playList,
   isHoverShow = true,
   playListId,
   comRef,
 }) => {
   const fvList = useAppSelector((state) => state?.user?.favoriteListID)
-  const [useAnimate, setUseAnimate] = useState(false)
-  const [isLike, setIsLike] = useState(
-    fvList?.includes(song?.encodeId || "000"),
-  )
 
-  useEffect(() => {
-    setIsLike(fvList?.includes(song?.encodeId || "000"))
-  }, [fvList])
-
-  return SONG_ACTION.map((item, index) => {
-    const isHeart = item.id == "heart"
+  return PLAYLIST_ACTION.map((item, index) => {
     const isOptions = item.id == "options"
-    const isHeartLike = isLike && isHeart
-    const random = Math?.random()
-    const Icon = isHeartLike ? item?.activeIcon : item?.icon
-    const color = isHeartLike ? "var(--heart-color)" : "#ffffff"
+    const Icon = item?.icon
     const callback = item?.callback
     const cb = () => {
-      !isLike && setUseAnimate(true)
-      callback({ song, isLike })
-      isHeart && setIsLike(!isLike)
+      callback && callback({ playList })
     }
     return (
       <div
         key={index}
         className={`mr-1 ${
-          isHoverShow && !isHeartLike ? "opacity-0" : ""
+          isHoverShow ? "opacity-0" : ""
         } group-hover:opacity-100`}
       >
-        {isHeart && (
-          <CirButton
-            useSAnimate
-            isTransparent={true}
-            onClick={() => {
-              item?.isLoginedAction ? loginCallback(cb) : cb()
-            }}
-          >
-            <div
-              className={`toggle-heart ${
-                isHeartLike
-                  ? `${useAnimate ? "is-liked" : "is-liked-not-animate"}`
-                  : ""
-              }`}
-            >
-              <Icon color={color} />
-            </div>
-          </CirButton>
-        )}
-
         {isOptions && (
           <SongOption
             comRef={comRef}
-            song={song}
+            playList={playList}
             playListId={playListId}
             button={
               <CirButton
@@ -101,10 +71,10 @@ export const SongAction: React.FC<IProps> = ({
                 isStopPropagation={false}
                 isTransparent={true}
                 onClick={() => {
-                  item?.isLoginedAction ? loginCallback(cb) : cb()
+                  cb()
                 }}
               >
-                <Icon className="text-2xl" color={color} />
+                <Icon className="text-2xl" color={"var(--color-white)"} />
               </CirButton>
             }
           />
@@ -115,25 +85,24 @@ export const SongAction: React.FC<IProps> = ({
 }
 
 interface ISongOption {
-  song: ISong | ISongInfo
+  playList: IPlayList
   button?: ReactNode
   playListId?: string
   comRef?: HTMLDivElement | null
 }
 
 const SongOption: React.FC<ISongOption> = ({
-  song,
+  playList,
   button,
   playListId,
   comRef,
 }) => {
   const ref = useRef<PopupActions>(null)
   const user = useAppSelector((state) => state?.user?.data)
-
   const OPTION =
-    playListId?.length == 10 && user?.id == song?.userId && user?.id
-      ? OPTIONS_SONG_OWNER
-      : OPTIONS_SONG
+    playList?.encodeId?.length == 10 && user?.id == playList?.userId && user?.id
+      ? OPTIONS_PLAYLIST_OWNER
+      : OPTIONS_PLAYLIST
   return (
     <Popup
       ref={ref}
@@ -148,7 +117,7 @@ const SongOption: React.FC<ISongOption> = ({
           <div
             onClick={() => {
               const cb = option?.callback
-              const params = { song, playlistId: playListId || "", comRef }
+              const params = { playList }
               if (option?.isLoginedAction) {
                 cb && loginCallback(() => cb(params))
               } else {

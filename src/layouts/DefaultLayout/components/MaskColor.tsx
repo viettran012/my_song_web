@@ -9,7 +9,7 @@ const MaskColor: React.FC = () => {
         style={{
           backgroundImage: songInfo?.thumbnailM
             ? `url(${songInfo?.thumbnailM})`
-            : "url(/images/body-bg.jpg)",
+            : "url(/static/images/body-bg.jpg)",
           boxShadow: "inset 0 0 30px 15px #212121",
         }}
         className={`absolute h-80 top-0 left-0 bg-no-repeat bg-cover ${

@@ -120,6 +120,7 @@ const PlayerControl: React.FC<IProps> = memo(() => {
                 onClick={item.callback}
                 radius={item.bRadius}
                 isTransparent
+                useSAnimate
                 styles={{ margin: "0 8px" }}
               >
                 <Icon {...loadingProps} size={item.size} />

@@ -29,7 +29,11 @@ const BannerItem: React.FC<IProps> = ({ item }) => {
   return (
     <Link to={href}>
       <div className="group relative w-80 h-44 mr-6 br rounded flex justify-center items-center overflow-hidden cursor-pointer">
-        <img className="rounded object-cover" src={item.banner} />
+        <img
+          className="rounded object-cover"
+          src={item.banner}
+          alt="banner-thumb"
+        />
         <div className="duration-300 transition-all opacity-0 group-hover:opacity-100 top-0 rounded absolute w-full h-full cursor-pointer bg-gradient-to-b from-from-body-bg-gradiant to-transparent"></div>
       </div>
     </Link>

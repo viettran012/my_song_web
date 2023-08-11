@@ -16,6 +16,7 @@ interface ISetUSer {
   picture?: string
   token?: string
   time?: number
+  id?: number
 }
 
 export const setUser = ({
@@ -25,6 +26,7 @@ export const setUser = ({
   picture,
   token,
   time,
+  id,
 }: ISetUSer) => {
   store.dispatch(setIsLogin(true))
 
@@ -36,6 +38,7 @@ export const setUser = ({
       email,
       picture,
       time: getTime?.currUnix(),
+      id,
     }),
   )
 }

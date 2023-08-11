@@ -22,9 +22,16 @@ function App() {
 
   useEffect(() => {
     initDataUser()
+    // console.log(document.body.clientWidth)
   }, [])
 
-  return (
+  return document?.body?.clientWidth < 768 ? (
+    <>
+      <div className="h-[100vh] flex justify-center items-center">
+        Opp! This app not yet support mobile
+      </div>
+    </>
+  ) : (
     <>
       {!getToken() && <OneTabLogin />}
       <Router>

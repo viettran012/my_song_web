@@ -33,7 +33,6 @@ const Sidebar: React.FC<IProps> = ({}) => {
     // remove event scroll when unmount
     return () => window.removeEventListener("scroll", handleOnScroll)
   }, [])
-
   return (
     <div
       className={`transition-border flex flex-col fixed z-20 pt-header px-2 overflow-auto bottom-0 top-0 left-0 border-r border-neutral-800 ${

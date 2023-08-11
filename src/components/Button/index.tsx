@@ -10,6 +10,7 @@ interface ICirButton {
   isStopPropagation?: boolean
   isRadius?: boolean
   className?: string
+  useSAnimate?: boolean
 }
 
 export const CirButton: React.FC<ICirButton> = ({
@@ -22,6 +23,7 @@ export const CirButton: React.FC<ICirButton> = ({
   isStopPropagation = true,
   isRadius = true,
   className = "",
+  useSAnimate = false,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     isStopPropagation && e.stopPropagation()
@@ -31,11 +33,14 @@ export const CirButton: React.FC<ICirButton> = ({
   return (
     <div
       onClick={handleClick}
-      className={`${className} cursor-pointer transition-all ${
+      // tabIndex={1}
+      className={`${className} cursor-pointer transition-all transition-border- ${
         isRadius ? "rounded-full" : "rounded-sm"
-      } flex justify-center items-center border active:scale-90 ${
+      } flex justify-center items-center border ${
         !isTransparent ? "border-bdm" : "border-transparent"
-      } hover:bg-whv`}
+      } hover:bg-whv ${
+        useSAnimate ? "button-circle-focus-class" : "active:scale-90"
+      }`}
       style={{
         width: radius,
         height: radius,
@@ -60,11 +65,14 @@ interface Button {
   isRadius?: boolean
   isAnimated?: boolean
   isActiveBg?: boolean
+  height?: number
+  useSAnimate?: boolean
 }
 
 export const Button: React.FC<Button> = ({
   children,
   radius = "40px",
+  height = "40px",
   styles,
   onClick,
   disabled = false,
@@ -73,6 +81,7 @@ export const Button: React.FC<Button> = ({
   isRadius = false,
   isAnimated = true,
   isActiveBg = false,
+  useSAnimate = false,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     isStopPropagation && e.stopPropagation()
@@ -81,6 +90,7 @@ export const Button: React.FC<Button> = ({
 
   return (
     <div
+      // tabIndex={1}
       onClick={handleClick}
       className={`cursor-pointer transition-all px-3 py-2 hover:bg-whv ${
         isRadius ? "rounded-full" : "rounded"
@@ -88,10 +98,11 @@ export const Button: React.FC<Button> = ({
         isAnimated ? "active:scale-90" : ""
       } ${!isTransparent ? "border-bdm" : "border-transparent"} ${
         isActiveBg ? "active:bg-whv1" : ""
-      } `}
+      } ${useSAnimate ? "button-circle-focus-class" : ""}`}
       style={{
         pointerEvents: disabled ? "none" : "auto",
         opacity: disabled ? 0.3 : 1,
+        height: height || "40px",
         ...styles,
       }}
     >

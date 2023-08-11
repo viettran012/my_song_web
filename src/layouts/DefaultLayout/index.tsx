@@ -8,6 +8,9 @@ import Sidebar from "./components/Sidebar"
 import MaskColor from "./components/MaskColor"
 import { LoginModal } from "../../components/Modal/LoginModal"
 import PlayListSelectModal from "../../components/Modal/PlayListSelectModal"
+import Confirm from "../../components/Confirm"
+import ShareModal from "../../components/Modal/ShareModal"
+import EditPlaylistModal from "../../components/Modal/EditPlaylistModal"
 
 interface IProps {
   children: ReactNode
@@ -34,6 +37,9 @@ const DefaultLayout: React.FC<IProps> = ({ children }) => {
         <LoginModal />
         <PlayScreen />
         <PlayListSelectModal />
+        <EditPlaylistModal />
+        <Confirm />
+        <ShareModal />
         <div
           className={`pt-20 px-24 relative z-10 flex flex-col items-center ${
             isSidebarExpand

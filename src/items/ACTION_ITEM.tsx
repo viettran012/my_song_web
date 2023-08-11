@@ -1,11 +1,13 @@
 import { AiOutlineMore } from "react-icons/ai"
 import {
+  PiDownloadSimpleLight,
   PiHeartFill,
   PiHeartLight,
   PiListPlus,
   PiListPlusLight,
   PiPlayCircleLight,
   PiShareFatLight,
+  PiTrashLight,
   PiUserLight,
 } from "react-icons/pi"
 import { ISong, ISongInfo } from "../types/item"
@@ -24,6 +26,9 @@ import { TbUserHeart } from "react-icons/tb"
 import { history } from "../_helper"
 import { createArtistHref, createPlayerHref } from "../utils/createHref"
 import initDataUser from "../utils/initData"
+import { TfiDownload } from "react-icons/tfi"
+import getSongService from "../services/getSongService"
+import downloadResource from "../utils/downloadResource"
 
 interface ISongActionCallback {
   song: ISong | ISongInfo
@@ -117,10 +122,43 @@ export const OPTIONS_SONG = [
   },
   {
     id: "options",
+    icon: TfiDownload,
+    iconSize: 20,
+    title: "Tải nhạc",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+
+      getSongService(song?.encodeId)
+        .then((fb) => {
+          const mp3 = fb?.data?.data?.[128]
+          if (mp3) {
+            downloadResource(mp3, song?.title || `${Math.random()}`)
+          } else {
+            return toast.error("Tải thất bại !")
+          }
+        })
+        .catch((error) => {
+          return toast.error("Tải thất bại !")
+        })
+    },
+  },
+  {
+    id: "options",
     icon: PiShareFatLight,
     iconSize: 22,
     title: "Chia sẻ",
-    callback: function ({ song }: ISongOptionsCallback) {},
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+      const sLink = `${window.location.protocol}//${
+        window.location.host
+      }${createPlayerHref(song?.encodeId)}`
+
+      ui.share({
+        link: sLink,
+        type: "song",
+        isShow: true,
+      })
+    },
   },
 ]
 
@@ -138,7 +176,7 @@ export const OPTIONS_SONG_OWNER = [
   },
   {
     id: "add-to-playlist",
-    icon: PiListPlusLight,
+    icon: PiTrashLight,
     iconSize: 22,
     isLoginedAction: true,
     title: "Xoá khỏi danh sách phát",
@@ -172,9 +210,42 @@ export const OPTIONS_SONG_OWNER = [
   },
   {
     id: "options",
+    icon: TfiDownload,
+    iconSize: 20,
+    title: "Tải nhạc",
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+
+      getSongService(song?.encodeId)
+        .then((fb) => {
+          const mp3 = fb?.data?.data?.[128]
+          if (mp3) {
+            downloadResource(mp3, song?.title || `${Math.random()}`)
+          } else {
+            return toast.error("Tải thất bại !")
+          }
+        })
+        .catch((error) => {
+          return toast.error("Tải thất bại !")
+        })
+    },
+  },
+  {
+    id: "options",
     icon: PiShareFatLight,
     iconSize: 22,
     title: "Chia sẻ",
-    callback: function ({ song }: ISongOptionsCallback) {},
+    callback: function ({ song }: ISongOptionsCallback) {
+      if (!song?.encodeId) return
+      const sLink = `${window.location.protocol}//${
+        window.location.host
+      }${createPlayerHref(song?.encodeId)}`
+
+      ui.share({
+        link: sLink,
+        type: "song",
+        isShow: true,
+      })
+    },
   },
 ]

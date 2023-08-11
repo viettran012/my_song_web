@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import SectionTitle, {
   SectionTitle2xl,
   SectionTitleXl,
@@ -21,21 +21,21 @@ import { SELECT_PER_CR_PL_ITEM } from "../../../items/SELECT_ITEM"
 import { object, string, number, date, InferType } from "yup"
 import { InfoToast, MiniToast } from "../../Toast"
 import toast from "react-hot-toast"
-import createPlayListService from "../../../services/createPlayListService"
+import createPlayListService, {
+  updatePlayListService,
+} from "../../../services/createPlayListService"
 import Loader from "../../Loader"
 import initDataUser from "../../../utils/initData"
 import { useNavigate } from "react-router-dom"
 import { createPlayListHref } from "../../../utils/createHref"
-import { loginCallback } from "../../../utils/ui"
+import { loginCallback, ui } from "../../../utils/ui"
+import { useAppSelector } from "../../../app/hooks"
+import routesConfig from "../../../configs/routes"
 let userSchema = object({
   permision: string().required(),
   title: string().required(),
   sortDescription: string().required(),
 })
-
-interface IProps {
-  button: ReactNode
-}
 
 interface IForm {
   permision?: string
@@ -43,23 +43,18 @@ interface IForm {
   sortDescription?: string
 }
 
-const AddPlaylistModal: React.FC<IProps> = ({ button }) => {
+const EditPlaylistModal: React.FC = () => {
   const navigate = useNavigate()
-  const [open, setOpen] = useState<boolean>(false)
-  const [isShowWarning, setIsShowWarning] = useState<boolean>(false)
+
+  const { isShow, playlist } = useAppSelector(
+    (state) => state?.ui?.editPlaylistModal,
+  )
+
   const [formState, setFromState] = useState<IForm>({
     permision: "2",
     title: "",
     sortDescription: "",
   })
-
-  const resetFormSate = () => {
-    setFromState({
-      permision: "2",
-      title: "",
-      sortDescription: "",
-    })
-  }
 
   const handleChangePer = (event: SelectChangeEvent) => {
     const value = event.target.value
@@ -75,34 +70,32 @@ const AddPlaylistModal: React.FC<IProps> = ({ button }) => {
     setFromState({ ...formState, [id]: value })
   }
 
-  const handleClickOpen = () => {
-    loginCallback(() => setOpen(true))
-  }
-
   const handleClose = () => {
-    setOpen(false)
-    resetFormSate()
+    ui.hiddenEditPlaylist()
   }
 
   const handleSubmit = async () => {
     userSchema
       .validate(formState)
       .then((fb) => {
-        setOpen(false)
-
-        const promise = createPlayListService(formState)
+        handleClose()
+        const promise = updatePlayListService({
+          ...formState,
+          encodeId: playlist?.encodeId,
+        })
 
         toast.promise(promise, {
-          loading: "Đang tạo playlist",
+          loading: "Đang lưu thay đổi",
           success: (data) => {
-            resetFormSate()
             initDataUser()
-            if (data?.result == 1 && data?.encodeId) {
-              navigate(createPlayListHref(data?.encodeId))
+            if (data?.result == 1) {
+              navigate(routesConfig.library)
             }
-            return data?.result == 1 ? "Tạo thành công" : "Tạo thất bại"
+            return data?.result == 1
+              ? "Đã lưu những thay đổi"
+              : "Không thể lưu những thay đổi"
           },
-          error: "Tạo thất bại",
+          error: "Không thể lưu những thay đổi",
         })
       })
       .catch((error) => {
@@ -113,11 +106,24 @@ const AddPlaylistModal: React.FC<IProps> = ({ button }) => {
       })
   }
 
+  useEffect(() => {
+    if (playlist?.title && playlist?.sortDescription && playlist?.encodeId) {
+      setFromState({
+        permision: `${playlist?.per}`,
+        title: playlist?.title,
+        sortDescription: playlist?.sortDescription,
+      })
+    } else {
+      //   handleClose()
+      //   toast.error("Không thể chỉnh sửa")
+    }
+  }, [playlist?.encodeId])
+
   return (
     <div>
-      <div onClick={handleClickOpen}>{button}</div>
       <Dialog
-        open={open}
+        key={playlist?.encodeId}
+        open={isShow}
         onClose={handleClose}
         PaperProps={{
           style: {
@@ -129,7 +135,7 @@ const AddPlaylistModal: React.FC<IProps> = ({ button }) => {
         }}
       >
         <DialogTitle>
-          <SectionTitleXl title="Danh sách phát mới" />
+          <SectionTitleXl title="Chỉnh sửa danh sách phát" />
         </DialogTitle>
         <DialogContent>
           <div className="mb-6">
@@ -203,11 +209,11 @@ const AddPlaylistModal: React.FC<IProps> = ({ button }) => {
           <Button onClick={handleClose} sx={{ color: "var(--color-white)" }}>
             Huỷ
           </Button>
-          <Button onClick={handleSubmit}>Tạo</Button>
+          <Button onClick={handleSubmit}>Lưu</Button>
         </DialogActions>
       </Dialog>
     </div>
   )
 }
 
-export default AddPlaylistModal
+export default EditPlaylistModal

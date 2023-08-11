@@ -6,6 +6,7 @@ import ArtistsPage from "../pages/Artists"
 
 //import Pages
 import Home from "../pages/Home"
+import Library from "../pages/Library"
 import PlayList from "../pages/PlayList"
 import Player from "../pages/Player"
 import Search from "../pages/Search"
@@ -26,7 +27,7 @@ const publicRoutes = [
   },
   {
     path: routesConfig.library,
-    component: Home,
+    component: Library,
     layout: DefaultLayout,
     sidebar: null,
   },

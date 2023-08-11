@@ -49,13 +49,13 @@ const Header: React.FC<Props> = ({}) => {
     >
       <div className="cursor-pointer absolute z-20 left-4 flex items-center">
         <div className="mr-2">
-          <CirButton isTransparent onClick={handleToggleSidebar}>
+          <CirButton isTransparent useSAnimate onClick={handleToggleSidebar}>
             <RxHamburgerMenu size={22} color={"white"} />
           </CirButton>
         </div>
         <Link to={"/"} className="cursor-pointer">
           <FlexTag>
-            <img alt="logo" src="/logo.png" className="h-7 w-7" />
+            <img alt="logo" src="/static/logo.png" className="h-7 w-7" />
             <div className="text-2xl tracking-[-3px] let font-bold ml-1">
               Solfive
             </div>
